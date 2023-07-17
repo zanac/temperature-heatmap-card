@@ -7,6 +7,6 @@ Configuration using YAML
 Minimal example
 
 
-type: custom:temperature-heatmap
-entity: sensor.ewelink_th01_temperature_3
+type: custom:temperature-heatmap-card<br/>
+entity: sensor.ewelink_th01_temperature_3<br/>
 title: Temperature Esterne
