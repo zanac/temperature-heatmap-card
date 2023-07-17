@@ -1,5 +1,5 @@
 {
-    "name": "Temperature Heatmap card",
+    "name": "temperature-heatmap-card",
     "content_in_root": true,
     "filename": "temperature-heatmap-card.js"
 }
