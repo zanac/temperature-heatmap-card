@@ -40,6 +40,7 @@ class TemperatureHeatmapCard extends HTMLElement {
   tempToRGB(temp) {
     if (isNaN(Math.round(temp))) return "d1d1d1";
     if (temp == -999) return "d1d1d1";
+    if (Math.round(temp) >= 37) return "ff006a";
     var minimum = -5;
     var maximum = 35;
     var valTemp = temp;
