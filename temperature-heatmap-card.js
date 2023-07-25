@@ -37,9 +37,9 @@ class TemperatureHeatmapCard extends LitElement {
     return style;
   }
 
-  onClickLeft(ev) {
+  onClickLeft(ev, shiftDay) {
     ev.stopPropagation();
-    this.shiftDay = this.shiftDay + 1;
+    this.shiftDay = this.shiftDay + shiftDay;
     const entityId = this.config.entity;
     this.get_recorder([entityId], 7);
   }
@@ -69,8 +69,8 @@ class TemperatureHeatmapCard extends LitElement {
     }
   }
 
-  onClickRight(ev) {
-    this.shiftDay = this.shiftDay - 1;
+  onClickRight(ev, shiftDay) {
+    this.shiftDay = this.shiftDay - shiftDay;
     const entityId = this.config.entity;
     this.get_recorder([entityId], 7);
     ev.stopPropagation();
@@ -283,14 +283,15 @@ class TemperatureHeatmapCard extends LitElement {
     this.replaceDay(5, this.Day5);
     this.replaceDay(6, this.Day6);
     var rightButton = this.shadowRoot.getElementById(this.id+"rightButton");
-    if (rightButton) {
-      if (this.DayNOW == this.Day6) rightButton.style.visibility = "hidden";
-      else rightButton.style.visibility = "visible";
-    }
     var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
+    if (rightButton) {
+      if (this.DayNOW == this.Day6) { rightButton.style.visibility = "hidden"; }
+      else { rightButton.style.visibility = "visible"; }
+
+    }
     if (leftButton) {
-      if (grid7[0][0] == -999 && grid7[0][11] == -999) leftButton.style.visibility = "hidden";
-      else leftButton.style.visibility = "visible";
+      if (grid7[0][0] == -999 && grid7[0][11] == -999) { leftButton.style.visibility = "hidden"; }
+      else { leftButton.style.visibility = "visible"; }
     }
 
 
@@ -600,8 +601,8 @@ class TemperatureHeatmapCard extends LitElement {
                    <td width="12%"></td>
                    <td width="10%"></td>
                    <td width="10%" style="white-space:nowrap;">
-		      <ha-icon id="${this.id}leftButton" icon='mdi:arrow-left-box' @click=${e => this.onClickLeft(e)}></ha-icon>
-		      <ha-icon id="${this.id}rightButton" icon='mdi:arrow-right-box' @click=${e => this.onClickRight(e)}></ha-icon>
+		      <ha-icon style='color:#7d8db8;' id="${this.id}leftButton" icon='mdi:chevron-left-box-outline' @click=${e => this.onClickLeft(e, 1)}></ha-icon>
+		      <ha-icon style='color:#7d8db8;' id="${this.id}rightButton" icon='mdi:chevron-right-box-outline' @click=${e => this.onClickRight(e, 1)}></ha-icon>
                    </td>
                    <td width="6%"></td>
               </tr>
