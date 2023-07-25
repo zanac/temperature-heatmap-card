@@ -570,7 +570,7 @@ class TemperatureHeatmapCard extends LitElement {
                    <td></td>
                    <td></td>
                    <td></td>
-                   <td>
+                   <td style="white-space:nowrap;">
 		      <ha-icon id="${this.id}leftButton" icon='mdi:arrow-left-box' @click=${e => this.onClickLeft(e)}></ha-icon>
 		      <ha-icon id="${this.id}rightButton" icon='mdi:arrow-right-box' @click=${e => this.onClickRight(e)}></ha-icon>
                    </td>
