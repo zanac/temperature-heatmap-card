@@ -31,6 +31,9 @@ entity: sensor.your_sensor<br/>
 title: Temperature Esterne
 ```
 
+## About me
+My real name is Vanni Brutto, for friends... just call me Zanac
+
 ## General thanks
 * [Home Assistant](https://www.home-assistant.io/)
 * kandsten that make ha-heatmap-card that i use to get some idea of how to implement my card https://github.com/kandsten/ha-heatmap-card/
