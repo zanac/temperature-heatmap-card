@@ -28,7 +28,8 @@ Minimal example
 ```
 type: custom:temperature-heatmap-card<br/>
 entity: sensor.your_sensor<br/>
-title: Temperature Esterne```
+title: Temperature Esterne
+```
 
 ## General thanks
 * [Home Assistant](https://www.home-assistant.io/)
