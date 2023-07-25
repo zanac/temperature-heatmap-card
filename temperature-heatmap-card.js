@@ -593,15 +593,12 @@ class TemperatureHeatmapCard extends LitElement {
         <table cellspacing="0" cellpadding="0" style="margin: 0 auto;width:98%" >
            </tbody>
               <tr>
-                   <td width="12%"></td>
-                   <td width="12%"></td>
-                   <td width="12%"></td>
-                   <td width="12%"></td>
-                   <td width="12%"></td>
-                   <td width="12%"></td>
-                   <td width="10%"></td>
+                   <td width="16%"></td>
                    <td width="10%" style="white-space:nowrap;">
 		      <ha-icon style='color:#7d8db8;' id="${this.id}leftButton" icon='mdi:chevron-left-box-outline' @click=${e => this.onClickLeft(e, 1)}></ha-icon>
+                   </td>
+                   <td width="58%"></td>
+                   <td width="10%" style="white-space:nowrap;">
 		      <ha-icon style='color:#7d8db8;' id="${this.id}rightButton" icon='mdi:chevron-right-box-outline' @click=${e => this.onClickRight(e, 1)}></ha-icon>
                    </td>
                    <td width="6%"></td>
