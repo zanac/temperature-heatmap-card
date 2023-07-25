@@ -42,7 +42,12 @@ class TemperatureHeatmapCard extends LitElement {
     const entityId = this.config.entity;
     this.get_recorder([entityId], 7);
   }
-
+  onClickRight(ev, shiftDay) {
+    this.shiftDay = this.shiftDay - shiftDay;
+    const entityId = this.config.entity;
+    this.get_recorder([entityId], 7);
+    ev.stopPropagation();
+  }
   onClickNumber(ev) {
     ev.stopPropagation();
     var e;
@@ -66,13 +71,6 @@ class TemperatureHeatmapCard extends LitElement {
     if (theDiv) {
       theDiv.innerHTML = text;
     }
-  }
-
-  onClickRight(ev, shiftDay) {
-    this.shiftDay = this.shiftDay - shiftDay;
-    const entityId = this.config.entity;
-    this.get_recorder([entityId], 7);
-    ev.stopPropagation();
   }
 
   // The user supplied configuration. Throw an exception and Home Assistant
