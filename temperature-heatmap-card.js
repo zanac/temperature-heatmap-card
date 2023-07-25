@@ -8,7 +8,7 @@ const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 const style = css`
-ha-icon {
+  ha-icon {
     --mdc-icon-size: 40px;
   }`
 
@@ -31,6 +31,10 @@ class TemperatureHeatmapCard extends LitElement {
     if (!this.shiftDay) this.shiftDay = 0;
     this.get_recorder([entityId], 7);
     this.hass_inited = true;
+  }
+
+  static getConfigElement() {
+    return document.createElement("temperature-heatmap-card-editor");
   }
 
   static get styles() {
@@ -725,3 +729,22 @@ class TemperatureHeatmapCard extends LitElement {
 }
 
 customElements.define("temperature-heatmap-card", TemperatureHeatmapCard);
+
+class ContentCardEditor extends LitElement {
+  async setConfig(config) {
+        this._config = config;
+  }
+
+  set hass(hass) {
+    this.myhass = hass;
+  }
+}
+
+customElements.define("temperature-heatmap-card-editor", ContentCardEditor);
+window.customCards = window.customCards || [];
+window.customCards.push({
+  type: "temperature-heatmap-card",
+  name: "Temperature Heatmap Card",
+  preview: false, // Optional - defaults to false
+  description: "A cool temperature heatmap card!",
+});
