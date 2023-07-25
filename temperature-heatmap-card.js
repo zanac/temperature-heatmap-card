@@ -38,10 +38,19 @@ class TemperatureHeatmapCard extends LitElement {
   }
 
   onClickLeft(ev) {
+    ev.stopPropagation();
     this.shiftDay = this.shiftDay + 1;
     const entityId = this.config.entity;
     this.get_recorder([entityId], 7);
+  }
+
+  onClickNumber(ev) {
     ev.stopPropagation();
+    var e;
+    e = new Event('hass-more-info', { composed: true });
+    const entityId = this.config.entity;
+    if (this.config.entity) e.detail = { entityId };
+    this.dispatchEvent(e);
   }
 
   replaceText(posxy, text) {
@@ -288,7 +297,7 @@ class TemperatureHeatmapCard extends LitElement {
     return html`
         <ha-card header="${this.config.title}" id="card">
             <div class="card-content">
-                              <table cellspacing="0" cellpadding="0" style="margin: 0 auto;width:98%" >
+                              <table @click=${e => this.onClickNumber(e)} cellspacing="0" cellpadding="0" style="margin: 0 auto;width:98%" >
       <thead>
           <tr>                    
               <td width="16%" ></td>
