@@ -1,7 +1,8 @@
 # temperature-heatmap-card
 Temperature Hetmap for Home Assistant
 
-![image](https://github.com/zanac/ha-temperature-heatmap/assets/21194919/69879734-0537-43b3-aa21-5f0631e86459)
+![image](https://github.com/zanac/temperature-heatmap-card/assets/21194919/d0acf5ff-fce8-4428-ad00-d7a85b1c2287)
+
 
 Configuration using YAML
 Minimal example
