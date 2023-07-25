@@ -1,6 +1,18 @@
+/*import {
+  LitElement,
+  html,
+  css,
+} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";*/
 const LitElement = Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
 const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
+
+const style = css`
+ha-icon {
+    --mdc-icon-size: 40px;
+  }`
+
+export default style;
 
 class TemperatureHeatmapCard extends LitElement {
   hass_inited = false;
@@ -19,6 +31,10 @@ class TemperatureHeatmapCard extends LitElement {
     if (!this.shiftDay) this.shiftDay = 0;
     this.get_recorder([entityId], 7);
     this.hass_inited = true;
+  }
+
+  static get styles() {
+    return style;
   }
 
   onClickLeft(ev) {
@@ -562,18 +578,23 @@ class TemperatureHeatmapCard extends LitElement {
                               <div id="${this.id}6b"></div>
                           </td>
               </tr>
+           </tbody>
+        </table>
+        <table cellspacing="0" cellpadding="0" style="margin: 0 auto;width:98%" >
+           </tbody>
               <tr>
-                   <td></td>
-                   <td></td>
-                   <td></td>
-                   <td></td>
-                   <td></td>
-                   <td></td>
-                   <td></td>
-                   <td style="white-space:nowrap;">
+                   <td width="12%"></td>
+                   <td width="12%"></td>
+                   <td width="12%"></td>
+                   <td width="12%"></td>
+                   <td width="12%"></td>
+                   <td width="12%"></td>
+                   <td width="10%"></td>
+                   <td width="10%" style="white-space:nowrap;">
 		      <ha-icon id="${this.id}leftButton" icon='mdi:arrow-left-box' @click=${e => this.onClickLeft(e)}></ha-icon>
 		      <ha-icon id="${this.id}rightButton" icon='mdi:arrow-right-box' @click=${e => this.onClickRight(e)}></ha-icon>
                    </td>
+                   <td width="6%"></td>
               </tr>
        </tbody>
   </table>
