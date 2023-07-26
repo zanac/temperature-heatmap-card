@@ -1,3 +1,8 @@
+/*import {
+  LitElement,
+  html,
+  css,
+} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";*/
 const LitElement = Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
 const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
@@ -42,12 +47,7 @@ class TemperatureHeatmapCard extends LitElement {
     const entityId = this.config.entity;
     this.get_recorder([entityId], 7);
   }
-  onClickRight(ev, shiftDay) {
-    this.shiftDay = this.shiftDay - shiftDay;
-    const entityId = this.config.entity;
-    this.get_recorder([entityId], 7);
-    ev.stopPropagation();
-  }
+
   onClickNumber(ev) {
     ev.stopPropagation();
     var e;
@@ -71,6 +71,13 @@ class TemperatureHeatmapCard extends LitElement {
     if (theDiv) {
       theDiv.innerHTML = text;
     }
+  }
+
+  onClickRight(ev, shiftDay) {
+    this.shiftDay = this.shiftDay - shiftDay;
+    const entityId = this.config.entity;
+    this.get_recorder([entityId], 7);
+    ev.stopPropagation();
   }
 
   // The user supplied configuration. Throw an exception and Home Assistant
@@ -723,17 +730,176 @@ class TemperatureHeatmapCard extends LitElement {
 
 customElements.define("temperature-heatmap-card", TemperatureHeatmapCard);
 
-class ContentCardEditor extends LitElement {
-  async setConfig(config) {
-        this._config = config;
-  }
 
-  set hass(hass) {
-    this.myhass = hass;
-  }
+export class TemperatureHeatmapCardEditor extends LitElement {
+    static get properties() {
+        return {
+            _config: {},
+            entity: undefined
+        };
+    }
+
+    set hass(hass) {
+        this.myhass = hass;
+    }
+
+    async setConfig(config) {
+        this._config = config;
+        // Ensure that the entity picker element is available to us before we render.
+        // https://github.com/thomasloven/hass-config/wiki/PreLoading-Lovelace-Elements
+        var helpers = await loadCardHelpers();
+        if (!customElements.get("ha-entity-picker")) {
+            const entities_card = await helpers.createCardElement({type: "entities", entities: []});
+            await entities_card.constructor.getConfigElement();
+        }
+
+        this.entity = this.myhass.states[this._config.entity];
+    }
+
+
+    render_entity_warning() {
+        if (this.entity === undefined) { return; }
+        if (this.entity.attributes?.state_class === undefined ||
+            ['measurement', 'total', 'total_increasing'].includes(this.entity.attributes?.state_class) === false
+            ) {
+                return html`
+                    <ha-alert
+                        .title=${"Warning"}
+                        .type=${"warning"}
+                        own-margin
+                    >
+                        <div>
+                            <p>This entity has a <code>state_class</code> attribute set to
+                            <i>${this.entity.attributes?.state_class ?? 'undefined'}</i>.</p>
+                            <p>This means that data won't be saved to Long Term Statistics, which
+                            we use to drive the heatmap; no results will be shown.</p>
+                        </div>
+                    </ha-alert>
+                `
+        }
+    }
+
+    render() {
+        if (this.myhass === undefined || this._config === undefined) { return; }
+
+        return html`
+        <div class="root card-config">
+            <ha-entity-picker
+                .required=${true}
+                .hass=${this.myhass}
+                .value=${this._config.entity}
+                .configValue=${"entity"}
+                .includeDomains=${"sensor"}
+            ></ha-entity-picker>
+            ${this.render_entity_warning()}
+            <h3>Card elements</h3>
+            <ha-textfield
+                .label=${"Card title"}
+                .placeholder=${(this.entity && this.entity.attributes.friendly_name) || ''}
+                .value=${this._config.title || ""}
+                .configValue=${"title"}
+                @input=${this.update_field}
+                ></ha-textfield></div>`
+    }
+
+    /*
+        Cribbing the general idea from ha-selector-select.ts here, just
+        doing some more manual event work.
+
+        Not very generic and a bit fugly. Works for this particular scenario.
+
+    */
+        update_field(ev) {
+            ev.stopPropagation();
+            const value = ev.target.value;
+            if (this.disabled || value === undefined || value === this.value) {
+                return;
+            }
+            const event = new Event('value-changed', { bubbles: true });
+            if ('checked' in ev.target) {
+                // Is this a checkbox?
+                event.detail = {'value': (ev.target.checked === true ? value : 0)};
+            } else if (isNaN(parseFloat(value))) {
+                // Can't parse as a number? Use verbatim
+                event.detail = {'value': value};
+            } else {
+                event.detail = {'value': parseFloat(value)};
+            }
+            ev.target.dispatchEvent(event);
+        }
+
+    createRenderRoot() {
+        const root = super.createRenderRoot();
+        root.addEventListener("value-changed", (ev) => {
+            ev.stopPropagation();
+            const key = ev.target.configValue;
+            const val = ev.detail.value;
+            var config = JSON.parse(JSON.stringify(this._config));
+
+            /*
+                When updating the device class, we also want to set the
+                scale to the class default.
+            */
+
+            /*
+                When updating the entity, set the scale to the class default
+                of this entity if it has a class. If so, also zap the device_class
+                value from the config if it's set.
+            */
+            if (key === 'entity') {
+                const new_entity = this.myhass.states[val];
+            }
+
+            /*
+                Figure out what object to update; we're making things a bit hard
+                on ourselves by supporting dot notation in the configValue
+            */
+            var root = config;
+            var target = key;
+            if (key.indexOf('.')) {
+                for (const segment of key.split('.').slice(0, -1)) {
+                    if (root[segment] === undefined) {
+                        root[segment] = {};
+                    }
+                    root = root[segment];
+                }
+                target = key.split('.').slice(-1);
+            }
+            root[target] = val;
+
+            const event = new Event('config-changed');
+            event.detail = {'config': config};
+            this.dispatchEvent(event);
+        });
+        return root;
+    }
+
+    /* Copied from ha-form css; used for spacing between combo boxes */
+    static styles = css`
+        .root > * {
+            display: block;
+        }
+        .root > *:not([own-margin]):not(:last-child) {
+            margin-bottom: 24px;
+        }
+        ha-alert[own-margin] {
+            margin-bottom: 4px;
+        }
+
+
+        a:link, a:visited {
+            color: var(--primary-color);
+        }
+
+
+        /* Don't mess with the line spacing */
+        sup, sub {
+            line-height: 0;
+        }
+    `;
 }
 
-customElements.define("temperature-heatmap-card-editor", ContentCardEditor);
+customElements.define("temperature-heatmap-card-editor", TemperatureHeatmapCardEditor);
 window.customCards = window.customCards || [];
 window.customCards.push({
   type: "temperature-heatmap-card",
