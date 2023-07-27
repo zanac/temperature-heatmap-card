@@ -66,10 +66,13 @@ class TemperatureHeatmapCard extends LitElement {
     }
   }
 
-  replaceDay(pos, text) {
+  replaceDay(pos, text, letter) {
     var theDiv = this.shadowRoot.getElementById(this.id+"DAY"+pos);
     if (theDiv) {
-      theDiv.innerHTML = text;
+      var day_label = false;
+      if (this.config.day_label !== undefined) day_label = this.config.day_label;
+      if (!day_label) theDiv.innerHTML = text;
+      else theDiv.innerHTML  = text + "<br/>" + letter;
     }
   }
 
@@ -478,13 +481,13 @@ class TemperatureHeatmapCard extends LitElement {
     this.replaceText("4b", grid7[4][11]);
     this.replaceText("5b", grid7[5][11]);
     this.replaceText("6b", grid7[6][11]);
-    this.replaceDay(0, this.Day0);
-    this.replaceDay(1, this.Day1);
-    this.replaceDay(2, this.Day2);
-    this.replaceDay(3, this.Day3);
-    this.replaceDay(4, this.Day4);
-    this.replaceDay(5, this.Day5);
-    this.replaceDay(6, this.Day6);
+    this.replaceDay(0, this.Day0, this.Day0L);
+    this.replaceDay(1, this.Day1, this.Day1L);
+    this.replaceDay(2, this.Day2, this.Day2L);
+    this.replaceDay(3, this.Day3, this.Day3L);
+    this.replaceDay(4, this.Day4, this.Day4L);
+    this.replaceDay(5, this.Day5, this.Day5L);
+    this.replaceDay(6, this.Day6, this.Day6L);
     var rightButton = this.shadowRoot.getElementById(this.id+"rightButton");
     var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
     if (rightButton) {
@@ -852,6 +855,11 @@ class TemperatureHeatmapCard extends LitElement {
     return mese[0].toUpperCase() + mese.substring(1);
   }
 
+  getDayShortName(date) {
+    var mese = date.toLocaleString([], { weekday: 'short' });
+    return mese[0].toUpperCase();
+  }
+
   loaderResponse5(recorderResponse) {
         var customtable = JSON.stringify(recorderResponse);
         //this.grid = customtable;
@@ -905,6 +913,13 @@ class TemperatureHeatmapCard extends LitElement {
         this.Day2 = (new Date(now - ((4+shiftDay) * 86400000))).getDate();
         this.Day1 = (new Date(now - ((5+shiftDay) * 86400000))).getDate();
         this.Day0 = (new Date(now - ((6+shiftDay) * 86400000))).getDate();
+        this.Day6L = this.getDayShortName((new Date(now - ((0+shiftDay) * 86400000))));
+        this.Day5L = this.getDayShortName((new Date(now - ((1+shiftDay) * 86400000))));
+        this.Day4L = this.getDayShortName((new Date(now - ((2+shiftDay) * 86400000))));
+        this.Day3L = this.getDayShortName((new Date(now - ((3+shiftDay) * 86400000))));
+        this.Day2L = this.getDayShortName((new Date(now - ((4+shiftDay) * 86400000))));
+        this.Day1L = this.getDayShortName((new Date(now - ((5+shiftDay) * 86400000))));
+        this.Day0L = this.getDayShortName((new Date(now - ((6+shiftDay) * 86400000))));
         this.MonthNOW = this.getMonthShortName((new Date(now)).getMonth());
         this.Month6 = this.getMonthShortName(new Date(now - ((0+shiftDay) * 86400000)).getMonth());
         this.Month5 = this.getMonthShortName(new Date(now - ((1+shiftDay) * 86400000)).getMonth());
@@ -951,7 +966,8 @@ export class TemperatureHeatmapCardEditor extends LitElement {
             _config: {},
             entity: undefined,
             title: undefined,
-            month_label: undefined
+            month_label: undefined,
+            day_label: undefined
         };
     }
 
@@ -972,6 +988,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         this.entity = this.myhass.states[this._config.entity];
         this.title = this.myhass.states[this._config.title];
         this.month_label = this.myhass.states[this._config.month_label];
+        this.day_label = this.myhass.states[this._config.day_label];
     }
 
 
@@ -1020,6 +1037,9 @@ export class TemperatureHeatmapCardEditor extends LitElement {
             <h3>Show Month Label</h3>
             <ha-switch
               .checked=${this._config.month_label !== undefined && this._config.month_label !== false} .configValue=${"month_label"} .value=${this._config.month_label}></ha-switch>
+            <h3>Show Day Label</h3>
+            <ha-switch
+              .checked=${this._config.day_label !== undefined && this._config.day_label !== false} .configValue=${"day_label"} .value=${this._config.day_label}></ha-switch>
          </div>`
                 
     }
@@ -1055,7 +1075,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         root.addEventListener("change", (ev) => {
             ev.stopPropagation();
             const key = ev.target.configValue;
-            if (key != "month_label") return;
+            if (key != "month_label" && key != 'day_label') return;
             const val = ev.target.checked;
             var config = JSON.parse(JSON.stringify(this._config));
 
