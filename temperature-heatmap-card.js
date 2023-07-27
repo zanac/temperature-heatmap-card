@@ -96,9 +96,208 @@ class TemperatureHeatmapCard extends LitElement {
     return 3;
   }
 
+  getHeadTable() {
+    var month_label = false;
+    if (this.config.month_label !== undefined) month_label = this.config.month_label;
+
+    var border_top = "";
+    var border_right = "";
+    this.thead = "";
+    if (month_label) {
+      border_top = "border-top:solid rgb(128, 128, 128);";
+      border_right = "border-right:solid rgb(128, 128, 128);";
+    }
+
+    var colspan0 = "0";
+    var colspan1 = "7";
+    var TR00 = this.shadowRoot.getElementById(this.id+"TR00")
+    var TR01 = this.shadowRoot.getElementById(this.id+"TR01")
+    var TR02 = this.shadowRoot.getElementById(this.id+"TR02")
+    var TR03 = this.shadowRoot.getElementById(this.id+"TR03")
+    var TR04 = this.shadowRoot.getElementById(this.id+"TR04")
+    var TR05 = this.shadowRoot.getElementById(this.id+"TR05")
+    var TR06 = this.shadowRoot.getElementById(this.id+"TR06")
+    var TD00 = this.shadowRoot.getElementById(this.id+"TD00")
+    var TD10 = this.shadowRoot.getElementById(this.id+"TD10")
+    var TD11 = this.shadowRoot.getElementById(this.id+"TD11")
+    var TD20 = this.shadowRoot.getElementById(this.id+"TD20")
+    var TD21 = this.shadowRoot.getElementById(this.id+"TD21")
+    var TD30 = this.shadowRoot.getElementById(this.id+"TD30")
+    var TD31 = this.shadowRoot.getElementById(this.id+"TD31")
+    var TD40 = this.shadowRoot.getElementById(this.id+"TD40")
+    var TD41 = this.shadowRoot.getElementById(this.id+"TD41")
+    var TD50 = this.shadowRoot.getElementById(this.id+"TD50")
+    var TD51 = this.shadowRoot.getElementById(this.id+"TD51")
+    var TD60 = this.shadowRoot.getElementById(this.id+"TD60")
+    var TD61 = this.shadowRoot.getElementById(this.id+"TD61")
+    var DAY0 = this.shadowRoot.getElementById(this.id+"DAY0");
+    var DAY1 = this.shadowRoot.getElementById(this.id+"DAY1");
+    var DAY2 = this.shadowRoot.getElementById(this.id+"DAY2");
+    var DAY3 = this.shadowRoot.getElementById(this.id+"DAY3");
+    var DAY4 = this.shadowRoot.getElementById(this.id+"DAY4");
+    var DAY5 = this.shadowRoot.getElementById(this.id+"DAY5");
+    var DAY6 = this.shadowRoot.getElementById(this.id+"DAY6");
+    var posMonth = 0;
+    if (month_label) {
+      if (TR00) { 
+        if (this.Month0 != this.Month1) {
+          posMonth = 1;
+          TR00.style.display = "none";
+          TR01.style.removeProperty('display');
+          TR02.style.display = "none";
+          TR03.style.display = "none";
+          TR04.style.display = "none";
+          TR05.style.display = "none";
+          TR06.style.display = "none";
+          TD10.innerHTML = this.Month0;
+          TD11.innerHTML = this.Month1;
+          DAY0.style.borderRight = "solid rgb(128, 128, 128)";
+          DAY1.style.removeProperty("border-right");
+          DAY2.style.removeProperty("border-right");
+          DAY3.style.removeProperty("border-right");
+          DAY4.style.removeProperty("border-right");
+          DAY5.style.removeProperty("border-right");
+          DAY6.style.removeProperty("border-right");
+        } else if (this.Month1 != this.Month2) {
+          posMonth = 2;
+          TR00.style.display = "none";
+          TR01.style.display = "none";
+          TR02.style.removeProperty('display');
+          TR03.style.display = "none";
+          TR04.style.display = "none";
+          TR05.style.display = "none";
+          TR06.style.display = "none";
+          TD20.innerHTML = this.Month1;
+          TD21.innerHTML = this.Month2;
+          DAY0.style.removeProperty("border-right");
+          DAY1.style.borderRight = "solid rgb(128, 128, 128)";
+          DAY2.style.removeProperty("border-right");
+          DAY3.style.removeProperty("border-right");
+          DAY4.style.removeProperty("border-right");
+          DAY5.style.removeProperty("border-right");
+          DAY6.style.removeProperty("border-right");
+        } else if (this.Month2 != this.Month3) {
+          posMonth = 3;
+          TR00.style.display = "none";
+          TR01.style.display = "none";
+          TR02.style.display = "none";
+          TR03.style.removeProperty('display');
+          TR04.style.display = "none";
+          TR05.style.display = "none";
+          TR06.style.display = "none";
+          TD30.innerHTML = this.Month2;
+          TD31.innerHTML = this.Month3;
+          DAY0.style.removeProperty("border-right");
+          DAY1.style.removeProperty("border-right");
+          DAY2.style.borderRight = "solid rgb(128, 128, 128)";
+          DAY3.style.removeProperty("border-right");
+          DAY4.style.removeProperty("border-right");
+          DAY5.style.removeProperty("border-right");
+          DAY6.style.removeProperty("border-right");
+        } else if (this.Month3 != this.Month4) {
+          posMonth = 4;
+          TR00.style.display = "none";
+          TR01.style.display = "none";
+          TR02.style.display = "none";
+          TR03.style.display = "none";
+          TR04.style.removeProperty('display');
+          TR05.style.display = "none";
+          TR06.style.display = "none";
+          TD40.innerHTML = this.Month3;
+          TD41.innerHTML = this.Month4;
+          DAY0.style.removeProperty("border-right");
+          DAY1.style.removeProperty("border-right");
+          DAY2.style.removeProperty("border-right");
+          DAY3.style.borderRight = "solid rgb(128, 128, 128)";
+          DAY4.style.removeProperty("border-right");
+          DAY5.style.removeProperty("border-right");
+          DAY6.style.removeProperty("border-right");
+        } else if (this.Month4 != this.Month5) {
+          posMonth = 5;
+          TR00.style.display = "none";
+          TR01.style.display = "none";
+          TR02.style.display = "none";
+          TR03.style.display = "none";
+          TR04.style.display = "none";
+          TR05.style.removeProperty('display');
+          TR06.style.display = "none";
+          TD50.innerHTML = this.Month4;
+          TD51.innerHTML = this.Month5;
+          DAY0.style.removeProperty("border-right");
+          DAY1.style.removeProperty("border-right");
+          DAY2.style.removeProperty("border-right");
+          DAY3.style.removeProperty("border-right");
+          DAY4.style.borderRight = "solid rgb(128, 128, 128)";
+          DAY5.style.removeProperty("border-right");
+          DAY6.style.removeProperty("border-right");
+        } else if (this.Month5 != this.Month6) {
+          posMonth = 6;
+          TR00.style.display = "none";
+          TR01.style.display = "none";
+          TR02.style.display = "none";
+          TR03.style.display = "none";
+          TR04.style.display = "none";
+          TR05.style.display = "none";
+          TR06.style.removeProperty('display');
+          TD60.innerHTML = this.Month5;
+          TD61.innerHTML = this.Month6;
+          DAY0.style.removeProperty("border-right");
+          DAY1.style.removeProperty("border-right");
+          DAY2.style.removeProperty("border-right");
+          DAY3.style.removeProperty("border-right");
+          DAY4.style.removeProperty("border-right");
+          DAY5.style.borderRight = "solid rgb(128, 128, 128)";
+          DAY6.style.removeProperty("border-right");
+        } else if (this.Month6 != this.MonthNOW) {
+          posMonth = 0;
+          TR00.style.removeProperty('display');
+          TR01.style.display = "none";
+          TR02.style.display = "none";
+          TR03.style.display = "none";
+          TR04.style.display = "none";
+          TR05.style.display = "none";
+          TR06.style.display = "none";
+          TD00.innerHTML = this.Month6;
+          DAY0.style.removeProperty("border-right");
+          DAY1.style.removeProperty("border-right");
+          DAY2.style.removeProperty("border-right");
+          DAY3.style.removeProperty("border-right");
+          DAY4.style.removeProperty("border-right");
+          DAY5.style.removeProperty("border-right");
+          DAY6.style.removeProperty("border-right");
+        } else if (this.MonthNOW == this.Month0) {
+          posMonth = 0;
+          TR00.style.removeProperty('display');
+          TR01.style.display = "none";
+          TR02.style.display = "none";
+          TR03.style.display = "none";
+          TR04.style.display = "none";
+          TR05.style.display = "none";
+          TR06.style.display = "none";
+          TD00.innerHTML = this.Month0;
+          DAY0.style.removeProperty("border-right");
+          DAY1.style.removeProperty("border-right");
+          DAY2.style.removeProperty("border-right");
+          DAY3.style.removeProperty("border-right");
+          DAY4.style.removeProperty("border-right");
+          DAY5.style.removeProperty("border-right");
+          DAY6.style.removeProperty("border-right");
+        }
+      }
+    }
+
+    return html`<tr id="${this.id}TR00" style="display:none"><td></td><td colspan="7" id="${this.id}TD00" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_top}">Lug</td></tr>
+    <tr id="${this.id}TR01" style="display:none"><td></td><td colspan="1" id="${this.id}TD10" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_right}${border_top}">Giu</td><td colspan="6" id="${this.id}TD11" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_top}">Lug</td></tr>
+    <tr id="${this.id}TR02" style="display:none"><td></td><td colspan="2" id="${this.id}TD20" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_right}${border_top}">Giu</td><td colspan="5" id="${this.id}TD21" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_top}">Lug</td></tr>
+    <tr id="${this.id}TR03" style="display:none"><td></td><td colspan="3" id="${this.id}TD30" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_right}${border_top}">Giu</td><td colspan="4" id="${this.id}TD31" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_top}">Lug</td></tr>
+    <tr id="${this.id}TR04" style="display:none"><td></td><td colspan="4" id="${this.id}TD40" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_right}${border_top}">Giu</td><td colspan="3" id="${this.id}TD41" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_top}">Lug</td></tr>
+    <tr id="${this.id}TR05" style="display:none"><td></td><td colspan="5" id="${this.id}TD50" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_right}${border_top}">Giu</td><td colspan="2" id="${this.id}TD51" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_top}">Lug</td></tr>
+    <tr id="${this.id}TR06" style="display:none"><td></td><td colspan="6" id="${this.id}TD60" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_right}${border_top}">Giu</td><td colspan="1" id="${this.id}TD61" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_top}">Lug</td></tr>`;
+  }
+
   tempToRGB(temp) {
-    if (isNaN(Math.round(temp))) return "d1d1d1";
-    if (temp == -999) return "d1d1d1";
+    if (isNaN(Math.round(temp))) return "808080";
+    if (temp == -999) return "808080";
     if (Math.round(temp) >= 37) return "ff006a";
     var minimum = -5;
     var maximum = 35;
@@ -297,13 +496,14 @@ class TemperatureHeatmapCard extends LitElement {
       if (grid7[0][0] == -999 && grid7[0][11] == -999) { leftButton.style.visibility = "hidden"; }
       else { leftButton.style.visibility = "visible"; }
     }
-
+    
 
     return html`
         <ha-card header="${this.config.title}" id="card">
             <div class="card-content">
-                              <table @click=${e => this.onClickNumber(e)} cellspacing="0" cellpadding="0" style="margin: 0 auto;width:98%" >
-      <thead>
+                              <table @click=${e => this.onClickNumber(e)} cellspacing="0" border="0" bordercolor="#f1f1f1" cellpadding="0" style="margin: 0 auto;width:98%" >
+      <thead>${this.getHeadTable()}</thead>
+      <tbody>
           <tr>                    
               <td width="16%" ></td>
                   <td width="12%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY0">${this.Day0}</div></td>
@@ -314,281 +514,279 @@ class TemperatureHeatmapCard extends LitElement {
                   <td width="12%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY5">${this.Day5}</div></td>
                   <td width="12%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY6">${this.Day6}</div></td>
           </tr>
-      </thead>
-      <tbody>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>00:00</td>
-                          <td id="${this.id}td00" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td00" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}00"></div>
                           </td>
-                          <td id="${this.id}td10" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td10" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}10"></div>
                           </td>
-                          <td id="${this.id}td20" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td20" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}20"></div>
                           </td>
-                          <td id="${this.id}td30" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td30" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}30"></div>
                           </td>
-                          <td id="${this.id}td40" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td40" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}40"></div>
                           </td>
-                          <td id="${this.id}td50" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td50" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}50"></div>
                           </td>
-                          <td id="${this.id}td60" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td60" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}60"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>02:00</td>
-                          <td id="${this.id}td01" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td01" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}01"></div>
                           </td>
-                          <td id="${this.id}td11" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td11" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}11"></div>
                           </td>
-                          <td id="${this.id}td21" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td21" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}21"></div>
                           </td>
-                          <td id="${this.id}td31" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td31" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}31"></div>
                           </td>
-                          <td id="${this.id}td41" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td41" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}41"></div>
                           </td>
-                          <td id="${this.id}td51" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td51" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}51"></div>
                           </td>
-                          <td id="${this.id}td61" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td61" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}61"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>04:00</td>
-                          <td id="${this.id}td02" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td02" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}02"></div>
                           </td>
-                          <td id="${this.id}td12" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td12" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}12"></div>
                           </td>
-                          <td id="${this.id}td22" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td22" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}22"></div>
                           </td>
-                          <td id="${this.id}td32" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td32" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}32"></div>
                           </td>
-                          <td id="${this.id}td42" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td42" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}42"></div>
                           </td>
-                          <td id="${this.id}td52" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td52" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}52"></div>
                           </td>
-                          <td id="${this.id}td62" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td62" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}62"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>06:00</td>
-                          <td id="${this.id}td03" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td03" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}03"></div>
                           </td>
-                          <td id="${this.id}td13" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td13" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}13"></div>
                           </td>
-                          <td id="${this.id}td23" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td23" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}23"></div>
                           </td>
-                          <td id="${this.id}td33" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td33" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}33"></div>
                           </td>
-                          <td id="${this.id}td43" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td43" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}43"></div>
                           </td>
-                          <td id="${this.id}td53" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td53" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}53"></div>
                           </td>
-                          <td id="${this.id}td63" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td63" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}63"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>08:00</td>
-                          <td id="${this.id}td04" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td04" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}04"></div>
                           </td>
-                          <td id="${this.id}td14" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td14" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}14"></div>
                           </td>
-                          <td id="${this.id}td24" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td24" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}24"></div>
                           </td>
-                          <td id="${this.id}td34" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td34" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}34"></div>
                           </td>
-                          <td id="${this.id}td44" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td44" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}44"></div>
                           </td>
-                          <td id="${this.id}td54" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td54" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}54"></div>
                           </td>
-                          <td id="${this.id}td64" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td64" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}64"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>10:00</td>
-                          <td id="${this.id}td05" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td05" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}05"></div>
                           </td>
-                          <td id="${this.id}td15" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td15" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}15"></div>
                           </td>
-                          <td id="${this.id}td25" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td25" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}25"></div>
                           </td>
-                          <td id="${this.id}td35" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td35" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}35"></div>
                           </td>
-                          <td id="${this.id}td45" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td45" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}45"></div>
                           </td>
-                          <td id="${this.id}td55" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td55" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}55"></div>
                           </td>
-                          <td id="${this.id}td65" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td65" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}65"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>12:00</td>
-                          <td id="${this.id}td06" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td06" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}06"></div>
                           </td>
-                          <td id="${this.id}td16" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td16" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}16"></div>
                           </td>
-                          <td id="${this.id}td26" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td26" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}26"></div>
                           </td>
-                          <td id="${this.id}td36" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td36" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}36"></div>
                           </td>
-                          <td id="${this.id}td46" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td46" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}46"></div>
                           </td>
-                          <td id="${this.id}td56" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td56" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}56"></div>
                           </td>
-                          <td id="${this.id}td66" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td66" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}66"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>14:00</td>
-                          <td id="${this.id}td07" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td07" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}07"></div>
                           </td>
-                          <td id="${this.id}td17" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td17" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}17"></div>
                           </td>
-                          <td id="${this.id}td27" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td27" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}27"></div>
                           </td>
-                          <td id="${this.id}td37" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td37" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}37"></div>
                           </td>
-                          <td id="${this.id}td47" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td47" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}47"></div>
                           </td>
-                          <td id="${this.id}td57" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td57" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}57"></div>
                           </td>
-                          <td id="${this.id}td67" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td67" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}67"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>16:00</td>
-                          <td id="${this.id}td08" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td08" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}08"></div>
                           </td>
-                          <td id="${this.id}td18" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td18" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}18"></div>
                           </td>
-                          <td id="${this.id}td28" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td28" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}28"></div>
                           </td>
-                          <td id="${this.id}td38" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td38" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}38"></div>
                           </td>
-                          <td id="${this.id}td48" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td48" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}48"></div>
                           </td>
-                          <td id="${this.id}td58" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td58" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}58"></div>
                           </td>
-                          <td id="${this.id}td68" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td68" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}68"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>18:00</td>
-                          <td id="${this.id}td09" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td09" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}09"></div>
                           </td>
-                          <td id="${this.id}td19" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td19" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}19"></div>
                           </td>
-                          <td id="${this.id}td29" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td29" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}29"></div>
                           </td>
-                          <td id="${this.id}td39" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td39" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}39"></div>
                           </td>
-                          <td id="${this.id}td49" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td49" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}49"></div>
                           </td>
-                          <td id="${this.id}td59" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td59" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}59"></div>
                           </td>
-                          <td id="${this.id}td69" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td69" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}69"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>20:00</td>
-                          <td id="${this.id}td0a" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td0a" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}0a"></div>
                           </td>
-                          <td id="${this.id}td1a" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td1a" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}1a"></div>
                           </td>
-                          <td id="${this.id}td2a" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td2a" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}2a"></div>
                           </td>
-                          <td id="${this.id}td3a" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td3a" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}3a"></div>
                           </td>
-                          <td id="${this.id}td4a" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td4a" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}4a"></div>
                           </td>
-                          <td id="${this.id}td5a" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td5a" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}5a"></div>
                           </td>
-                          <td id="${this.id}td6a" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td6a" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}6a"></div>
                           </td>
               </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>22:00</td>
-                          <td id="${this.id}td0b" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td0b" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}0b"></div>
                           </td>
-                          <td id="${this.id}td1b" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td1b" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}1b"></div>
                           </td>
-                          <td id="${this.id}td2b" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td2b" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}2b"></div>
                           </td>
-                          <td id="${this.id}td3b" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td3b" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}3b"></div>
                           </td>
-                          <td id="${this.id}td4b" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td4b" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}4b"></div>
                           </td>
-                          <td id="${this.id}td5b" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td5b" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}5b"></div>
                           </td>
-                          <td id="${this.id}td6b" style="background-color:#d1d1d1;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
+                          <td id="${this.id}td6b" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
                               <div id="${this.id}6b"></div>
                           </td>
               </tr>
@@ -647,6 +845,13 @@ class TemperatureHeatmapCard extends LitElement {
         this.render();
   }
 
+  getMonthShortName(monthNo) {
+    const date = new Date();
+    date.setMonth(monthNo);
+    var mese = date.toLocaleString([], { month: 'short' });
+    return mese[0].toUpperCase() + mese.substring(1);
+  }
+
   loaderResponse5(recorderResponse) {
         var customtable = JSON.stringify(recorderResponse);
         //this.grid = customtable;
@@ -670,6 +875,7 @@ class TemperatureHeatmapCard extends LitElement {
         }
         this.lastHour = lastHour / countHour;
         this.lastTime = lastTime;
+        this.render();
     }
 
   get_recorder(consumers, days) {
@@ -699,6 +905,14 @@ class TemperatureHeatmapCard extends LitElement {
         this.Day2 = (new Date(now - ((4+shiftDay) * 86400000))).getDate();
         this.Day1 = (new Date(now - ((5+shiftDay) * 86400000))).getDate();
         this.Day0 = (new Date(now - ((6+shiftDay) * 86400000))).getDate();
+        this.MonthNOW = this.getMonthShortName((new Date(now)).getMonth());
+        this.Month6 = this.getMonthShortName(new Date(now - ((0+shiftDay) * 86400000)).getMonth());
+        this.Month5 = this.getMonthShortName(new Date(now - ((1+shiftDay) * 86400000)).getMonth());
+        this.Month4 = this.getMonthShortName(new Date(now - ((2+shiftDay) * 86400000)).getMonth());
+        this.Month3 = this.getMonthShortName(new Date(now - ((3+shiftDay) * 86400000)).getMonth());
+        this.Month2 = this.getMonthShortName(new Date(now - ((4+shiftDay) * 86400000)).getMonth());
+        this.Month1 = this.getMonthShortName(new Date(now - ((5+shiftDay) * 86400000)).getMonth());
+        this.Month0 = this.getMonthShortName(new Date(now - ((6+shiftDay) * 86400000)).getMonth());
         if (hour == 1) hour = 0;
         if (hour == 3) hour = 2;
         if (hour == 5) hour = 4;
@@ -735,7 +949,9 @@ export class TemperatureHeatmapCardEditor extends LitElement {
     static get properties() {
         return {
             _config: {},
-            entity: undefined
+            entity: undefined,
+            title: undefined,
+            month_label: undefined
         };
     }
 
@@ -754,6 +970,8 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         }
 
         this.entity = this.myhass.states[this._config.entity];
+        this.title = this.myhass.states[this._config.title];
+        this.month_label = this.myhass.states[this._config.month_label];
     }
 
 
@@ -798,8 +1016,12 @@ export class TemperatureHeatmapCardEditor extends LitElement {
                 .placeholder=${(this.entity && this.entity.attributes.friendly_name) || ''}
                 .value=${this._config.title || ""}
                 .configValue=${"title"}
-                @input=${this.update_field}
-                ></ha-textfield></div>`
+                @input=${this.update_field}></ha-textfield>
+            <h3>Show Month Label</h3>
+            <ha-switch
+              .checked=${this._config.month_label !== undefined && this._config.month_label !== false} .configValue=${"month_label"} .value=${this._config.month_label}></ha-switch>
+         </div>`
+                
     }
 
     /*
@@ -809,37 +1031,60 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         Not very generic and a bit fugly. Works for this particular scenario.
 
     */
-        update_field(ev) {
-            ev.stopPropagation();
-            const value = ev.target.value;
-            if (this.disabled || value === undefined || value === this.value) {
-                return;
-            }
-            const event = new Event('value-changed', { bubbles: true });
-            if ('checked' in ev.target) {
-                // Is this a checkbox?
-                event.detail = {'value': (ev.target.checked === true ? value : 0)};
-            } else if (isNaN(parseFloat(value))) {
-                // Can't parse as a number? Use verbatim
-                event.detail = {'value': value};
-            } else {
-                event.detail = {'value': parseFloat(value)};
-            }
-            ev.target.dispatchEvent(event);
+    update_field(ev) {
+        ev.stopPropagation();
+        const value = ev.target.value;
+        if (this.disabled || value === undefined || value === this.value) {
+            return;
         }
+        const event = new Event('value-changed', { bubbles: true });
+        if ('checked' in ev.target) {
+            // Is this a checkbox?
+            event.detail = {'value': (ev.target.checked === true ? value : 0)};
+        } else if (isNaN(parseFloat(value))) {
+            // Can't parse as a number? Use verbatim
+            event.detail = {'value': value};
+        } else {
+            event.detail = {'value': parseFloat(value)};
+        }
+        ev.target.dispatchEvent(event);
+    }
 
     createRenderRoot() {
         const root = super.createRenderRoot();
+        root.addEventListener("change", (ev) => {
+            ev.stopPropagation();
+            const key = ev.target.configValue;
+            if (key != "month_label") return;
+            const val = ev.target.checked;
+            var config = JSON.parse(JSON.stringify(this._config));
+
+            /*
+                Figure out what object to update; we're making things a bit hard
+                on ourselves by supporting dot notation in the configValue
+            */
+            var root = config;
+            var target = key;
+            if (key.indexOf('.')) {
+                for (const segment of key.split('.').slice(0, -1)) {
+                    if (root[segment] === undefined) {
+                        root[segment] = {};
+                    }
+                    root = root[segment];
+                }
+                target = key.split('.').slice(-1);
+            }
+            root[target] = val;
+
+            const event = new Event('config-changed');
+            event.detail = {'config': config};
+            this.dispatchEvent(event);
+        });
         root.addEventListener("value-changed", (ev) => {
             ev.stopPropagation();
             const key = ev.target.configValue;
             const val = ev.detail.value;
             var config = JSON.parse(JSON.stringify(this._config));
-
-            /*
-                When updating the device class, we also want to set the
-                scale to the class default.
-            */
 
             /*
                 When updating the entity, set the scale to the class default
