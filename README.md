@@ -21,14 +21,19 @@ If you use [HACS](https://hacs.xyz) as-is, this card can be added as a **custom 
 ### Manual install
   * Download `temperature-heatmap-card.js`, place it in your `config/www` directory.
   * Add `/local/temperature-heatmap-card.js` in your Resource config, type of `JavaScript Module`.
-  
+
+### Configuration using the GUI
+Just add a temperature sensor and a card title!
+
 ### Configuration using YAML
 Sorry, for now the only way is use YAML!
 Minimal example
 ```
-type: custom:temperature-heatmap-card<br/>
-entity: sensor.your_sensor<br/>
-title: Temperature Esterne
+type: custom:temperature-heatmap-card
+entity: sensor.your_sensor
+title: Card Title
+month_label: true/false
+day_label: true/label
 ```
 
 ## About me
