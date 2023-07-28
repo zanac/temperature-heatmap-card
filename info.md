@@ -9,7 +9,9 @@ Custom card enabling [Temperature Heat maps](https://en.wikipedia.org/wiki/Heat_
 Sorry, for now the only way is use YAML!
 Minimal example
 ```
-type: custom:temperature-heatmap-card<br/>
-entity: sensor.your_sensor<br/>
-title: Temperature Esterne
+type: custom:temperature-heatmap-card
+entity: sensor.your_sensor
+title: Card Title
+month_label: true/false
+day_label: true/label
 ```
