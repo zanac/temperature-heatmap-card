@@ -296,9 +296,20 @@ class TemperatureHeatmapCard extends LitElement {
   tempToRGB(temp) {
     if (isNaN(Math.round(temp))) return "808080";
     if (temp == -999) return "808080";
-    if (Math.round(temp) >= 37) return "ff006a";
     var minimum = -5;
     var maximum = 35;
+    var humidity = false;
+    //if (this.config.humidity !== undefined) humidity = this.config.humidity;
+    const entityId = this.config.entity;
+    const consumerAttributes = this.myhass.states[this.config.entity].attributes;
+    if (consumerAttributes.device_class == "humidity") humidity = true;
+    if (humidity) {
+       if (temp <= 58) return "009f60";
+       temp = 100 - temp;
+       minimum = 20;
+       maximum = 90;
+    }
+    if (!humidity && Math.round(temp) >= 37) return "ff006a";
     var valTemp = temp;
     if (valTemp < minimum) valTemp = minimum;
     if (valTemp > maximum) valTemp = maximum;
