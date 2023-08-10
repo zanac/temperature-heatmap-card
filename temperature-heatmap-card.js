@@ -24,7 +24,9 @@ class TemperatureHeatmapCard extends LitElement {
     const state = hass.states[entityId];
     const stateStr = state ? state.state : "unavailable";
     if (!this.shiftDay) this.shiftDay = 0;
-    this.get_recorder([entityId], 7);
+    //this.get_recorder([entityId], 7);
+    var that = this;
+    setTimeout(function(){that.get_recorder([entityId], 7);}, 1500);
     this.hass_inited = true;
   }
 
