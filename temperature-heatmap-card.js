@@ -26,6 +26,7 @@ class TemperatureHeatmapCard extends LitElement {
     if (!this.shiftDay) this.shiftDay = 0;
     //this.get_recorder([entityId], 7);
     var that = this;
+    setTimeout(function(){that.get_recorder([entityId], 7);}, 50);
     setTimeout(function(){that.get_recorder([entityId], 7);}, 500);
     setTimeout(function(){that.get_recorder([entityId], 7);}, 1500);
     setTimeout(function(){that.get_recorder([entityId], 7);}, 2000);
