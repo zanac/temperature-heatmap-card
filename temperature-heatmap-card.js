@@ -1,3 +1,8 @@
+/*import {
+  LitElement,
+  html,
+  css,
+} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";*/
 const LitElement = Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
 const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
@@ -16,6 +21,9 @@ class TemperatureHeatmapCard extends LitElement {
   set hass(hass) {
     if (this.hass_inited === true) { return }
     this.myhass = hass;
+    this.min = -9999;
+    this.max = -9999;
+    this.mean = -9999;
     this.id = Math.random()
       .toString(36)
       .substr(2, 9);
@@ -24,12 +32,12 @@ class TemperatureHeatmapCard extends LitElement {
     const state = hass.states[entityId];
     const stateStr = state ? state.state : "unavailable";
     if (!this.shiftDay) this.shiftDay = 0;
-    //this.get_recorder([entityId], 7);
     var that = this;
     setTimeout(function(){that.get_recorder([entityId], 7);}, 50);
     setTimeout(function(){that.get_recorder([entityId], 7);}, 500);
     setTimeout(function(){that.get_recorder([entityId], 7);}, 1500);
     setTimeout(function(){that.get_recorder([entityId], 7);}, 2000);
+    //this.get_recorder([entityId], 7);
     this.hass_inited = true;
   }
 
@@ -63,6 +71,17 @@ class TemperatureHeatmapCard extends LitElement {
     if (theDiv) {
       theDiv.innerHTML = this.tempToLabel(Math.round(text));
       theTD.style.backgroundColor = "#"+this.tempToRGB(text);
+    }
+  }
+
+  replaceFooter() {
+    var theMin = this.shadowRoot.getElementById(this.id+"Min");
+    var theMax = this.shadowRoot.getElementById(this.id+"Max");
+    var theMean = this.shadowRoot.getElementById(this.id+"Mean");
+    if (theMin) {
+      theMin.innerHTML = this.min;
+      theMax.innerHTML = this.max;
+      theMean.innerHTML = this.mean;
     }
   }
 
@@ -298,6 +317,22 @@ class TemperatureHeatmapCard extends LitElement {
     <tr id="${this.id}TR06" style="display:none"><td></td><td colspan="6" id="${this.id}TD60" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_right}${border_top}">Giu</td><td colspan="1" id="${this.id}TD61" style="white-space: nowrap;text-align:center;vertical-align:middle;${border_top}">Lug</td></tr>`;
   }
 
+  getFootTable() {
+    var footer = false;
+    if (this.config.footer !== undefined) footer = this.config.footer;
+    var FootTable = this.shadowRoot.getElementById(this.id+"FootTable")
+    var BR = this.shadowRoot.getElementById(this.id+"BR")
+    if (FootTable && footer) {
+      FootTable.style.removeProperty('display');
+    } else {
+      if (BR) BR.style.display = "none";
+    }
+
+    return html`<span id="${this.id}FootTable" style="display:none;white-space:nowrap;text-align:right;float:right">
+  	        Min: <span id="${this.id}Min"></span>, Max:<span id="${this.id}Max"></span>, Avg:<span id="${this.id}Mean">
+    </span>`;
+  }
+
   tempToRGB(temp) {
     if (isNaN(Math.round(temp))) return "808080";
     if (temp == -999) return "808080";
@@ -408,6 +443,7 @@ class TemperatureHeatmapCard extends LitElement {
       }
     }
     
+    this.replaceFooter();
     this.replaceText("00", grid7[0][0]);
     this.replaceText("10", grid7[1][0]);
     this.replaceText("20", grid7[2][0]);
@@ -806,7 +842,7 @@ class TemperatureHeatmapCard extends LitElement {
               </tr>
            </tbody>
         </table>
-        <table cellspacing="0" cellpadding="0" style="margin: 0 auto;width:98%" >
+         <table cellspacing="0" cellpadding="0" style="margin: 0 auto;width:98%" >
            </tbody>
               <tr>
                    <td width="16%"></td>
@@ -819,8 +855,10 @@ class TemperatureHeatmapCard extends LitElement {
                    </td>
                    <td width="6%"></td>
               </tr>
-       </tbody>
-  </table>
+         </tbody>
+       </table>
+        ${this.getFootTable()}
+       <br id="${this.id}BR">
   </div>
   </ha-card>`;
     //<div style="height:50px;float:right;padding-right:30px;">
@@ -857,6 +895,31 @@ class TemperatureHeatmapCard extends LitElement {
             this.grid = grid;
         }
         this.render();
+  }
+
+  loaderResponseMin(recorderResponse) {
+        var customtable = JSON.stringify(recorderResponse);
+        //this.grid = customtable;
+        var consumers = [this.config.entity];
+        var grid = [];
+        var min = 9999;
+        var max = -9999;
+        var mean = 0;
+        var entryCount = 0;
+        for (const consumer of consumers) {
+            const consumerData = recorderResponse[consumer];
+            console.log(consumerData);
+            for (const entry of consumerData) {
+                if (entry.min < min) min = entry.min;
+                if (entry.max > max) max = entry.max;
+                mean = mean + entry.mean
+                entryCount = entryCount + 1;
+            }
+        }
+        mean = mean / entryCount;
+        this.min = parseFloat(min).toFixed(2);;
+        this.max = parseFloat(max).toFixed(2);
+        this.mean = parseFloat(mean).toFixed(2);
   }
 
   getMonthShortName(monthNo) {
@@ -912,6 +975,19 @@ class TemperatureHeatmapCard extends LitElement {
             "start_time": startTime,
             "end_time": endTime
         }).then(this.loaderResponse.bind(this),
+                this.loaderFailed.bind(this));
+        this.myhass.callWS({
+            'type': 'recorder/statistics_during_period',
+            'statistic_ids': [this.config.entity],
+            "types": [
+                "mean",
+                "min",
+                "max"
+            ],
+            "period": "day",
+            "start_time": startTime,
+            "end_time": endTime
+        }).then(this.loaderResponseMin.bind(this),
                 this.loaderFailed.bind(this));
         
         startTime = new Date(now - ((days+shiftDay) * 86400000))
@@ -978,7 +1054,8 @@ export class TemperatureHeatmapCardEditor extends LitElement {
             entity: undefined,
             title: undefined,
             month_label: undefined,
-            day_label: undefined
+            day_label: undefined,
+            footer: undefined
         };
     }
 
@@ -1000,6 +1077,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         this.title = this.myhass.states[this._config.title];
         this.month_label = this.myhass.states[this._config.month_label];
         this.day_label = this.myhass.states[this._config.day_label];
+        this.footer = this.myhass.states[this._config.footer];
     }
 
 
@@ -1051,6 +1129,9 @@ export class TemperatureHeatmapCardEditor extends LitElement {
             <h3>Show Day Label</h3>
             <ha-switch
               .checked=${this._config.day_label !== undefined && this._config.day_label !== false} .configValue=${"day_label"} .value=${this._config.day_label}></ha-switch>
+            <h3>Stat Footer</h3>
+            <ha-switch
+              .checked=${this._config.footer !== undefined && this._config.footer !== false} .configValue=${"footer"} .value=${this._config.footer}></ha-switch>
          </div>`
                 
     }
@@ -1086,7 +1167,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         root.addEventListener("change", (ev) => {
             ev.stopPropagation();
             const key = ev.target.configValue;
-            if (key != "month_label" && key != 'day_label') return;
+            if (key != "month_label" && key != 'day_label' && key != 'footer') return;
             const val = ev.target.checked;
             var config = JSON.parse(JSON.stringify(this._config));
 
