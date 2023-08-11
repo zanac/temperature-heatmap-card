@@ -162,7 +162,7 @@ class TemperatureHeatmapCard extends LitElement {
          icona = "arrow-up-bold-box";
          icona_color = "#ff0000";
       }
-      text = nowDay.toFixed(2);
+      //text = nowDay.toFixed(2);
       
       var trend = "";
       if (this.responseComplete) trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
