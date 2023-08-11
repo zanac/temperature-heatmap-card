@@ -1061,8 +1061,8 @@ class TemperatureHeatmapCard extends LitElement {
         startTime.setHours(0, 0, 0);
         var endTime = new Date(now - (shiftDay * 86400000))
         endTime.setHours(23, 59, 0);
-        var endTimeYesterday = new Date(now - (shiftDay * 86400000))
-        var startTimeYesterday = new Date(now - (shiftDay * 86400000))
+        var endTimeYesterday = new Date(now - (1 * 86400000))
+        var startTimeYesterday = new Date(now - (1 * 86400000))
         startTimeYesterday.setHours(0, 0, 0);
         this.myhass.callWS({
             'type': 'recorder/statistics_during_period',
