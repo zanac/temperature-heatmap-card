@@ -5,9 +5,9 @@ Temperature Hetmap for Home Assistant
 Custom card enabling [Temperature Heat maps](https://en.wikipedia.org/wiki/Heat_map) in Home Assistant. Makes it simple to visualize the temperature data in your Home Assistant, as a heatmap, in a very cool way.
 
 ## About this card
-About trend icon algorithm: icons show the trend of the day compared previous two days.
-About humidity: heatmap scale for humidity is not complete, it's just a POC!
-About footer labels: footer is in English format, sorry.
+  * About trend icon algorithm: icons show the trend of the day compared previous two days.
+  * About humidity: heatmap scale for humidity is not complete, it's just a POC!
+  * About footer labels: footer is in English format, sorry.
 
 ## Current state?
 * Spaghetti code
