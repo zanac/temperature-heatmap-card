@@ -1,14 +1,9 @@
-/*import {
-  LitElement,
-  html,
-  css,
-} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";*/
 const LitElement = Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
 const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
 
 const style = css`
-  ha-icon {
+  .ha-icon-big {
     --mdc-icon-size: 40px;
   }`
 
@@ -24,6 +19,7 @@ class TemperatureHeatmapCard extends LitElement {
     this.min = -9999;
     this.max = -9999;
     this.mean = -9999;
+    this.dayDizio = {};
     this.id = Math.random()
       .toString(36)
       .substr(2, 9);
@@ -89,9 +85,71 @@ class TemperatureHeatmapCard extends LitElement {
     var theDiv = this.shadowRoot.getElementById(this.id+"DAY"+pos);
     if (theDiv) {
       var day_label = false;
+      var prevDay = 0;
+      var prevDayX = 0;
+      var nowDay = 0;
+
+      if (pos == "0") {
+        prevDay = this.dayDizio[this.DayX];
+        prevDayX = this.dayDizio[this.DayX];
+        nowDay = this.dayDizio[this.Day0];
+      }
+      if (pos == "1") {
+        prevDay = this.dayDizio[this.Day0];
+        prevDayX = this.dayDizio[this.DayX];
+        nowDay = this.dayDizio[this.Day1];
+      }
+      if (pos == "2") {
+        prevDay = this.dayDizio[this.Day1];
+        prevDayX = this.dayDizio[this.Day0];
+        nowDay = this.dayDizio[this.Day2];
+      }
+      if (pos == "3") {
+        prevDay = this.dayDizio[this.Day2];
+        prevDayX = this.dayDizio[this.Day1];
+        nowDay = this.dayDizio[this.Day3];
+      }
+      if (pos == "4") {
+        prevDay = this.dayDizio[this.Day3];
+        prevDayX = this.dayDizio[this.Day2];
+        nowDay = this.dayDizio[this.Day4];
+      }
+      if (pos == "5") {
+        prevDay = this.dayDizio[this.Day4];
+        prevDayX = this.dayDizio[this.Day3];
+        nowDay = this.dayDizio[this.Day5];
+      }
+      if (pos == "6") {
+        prevDay = this.dayDizio[this.Day5];
+        prevDayX = this.dayDizio[this.Day4];
+        nowDay = this.dayDizio[this.Day6];
+      }
+
+      var delta0 = Math.abs(prevDay - nowDay);
+      var delta1 = Math.abs(prevDayX - nowDay);
+      var prio = 0;
+      if (delta1 > delta0) prio = 1;
+
+      var icona = "";
+      var icona_color = "";
+      if (delta0 <= 1.5 && delta1 <= 1.5) {
+         icona = "approximately-equal-box";
+         icona_color = "#828282";
+      } else if (prio == 0 && prevDay > nowDay) {
+         icona = "arrow-down-bold-box";
+         icona_color = "#106111";
+      } else if (prio == 1 && prevDayX > nowDay) {
+         icona = "arrow-down-bold-box";
+         icona_color = "#106111";
+      } else {
+         icona = "arrow-up-bold-box";
+         icona_color = "#ff0000";
+      }
+      
+      var trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
       if (this.config.day_label !== undefined) day_label = this.config.day_label;
-      if (!day_label) theDiv.innerHTML = text;
-      else theDiv.innerHTML  = text + "<br/>" + letter;
+      if (!day_label) theDiv.innerHTML = text + "<br/>" + trend;
+      else theDiv.innerHTML  = text + "<br/>" + trend + letter;
     }
   }
 
@@ -847,11 +905,11 @@ class TemperatureHeatmapCard extends LitElement {
               <tr>
                    <td width="16%"></td>
                    <td width="10%" style="white-space:nowrap;">
-		      <ha-icon style='color:#7d8db8;' id="${this.id}leftButton" icon='mdi:chevron-left-box-outline' @click=${e => this.onClickLeft(e, 1)}></ha-icon>
+		      <ha-icon class="ha-icon-big" style='color:#7d8db8;' id="${this.id}leftButton" icon='mdi:chevron-left-box-outline' @click=${e => this.onClickLeft(e, 1)}></ha-icon>
                    </td>
                    <td width="58%"></td>
                    <td width="10%" style="white-space:nowrap;">
-		      <ha-icon style='color:#7d8db8;' id="${this.id}rightButton" icon='mdi:chevron-right-box-outline' @click=${e => this.onClickRight(e, 1)}></ha-icon>
+		      <ha-icon class="ha-icon-big" style='color:#7d8db8;' id="${this.id}rightButton" icon='mdi:chevron-right-box-outline' @click=${e => this.onClickRight(e, 1)}></ha-icon>
                    </td>
                    <td width="6%"></td>
               </tr>
@@ -908,8 +966,10 @@ class TemperatureHeatmapCard extends LitElement {
         var entryCount = 0;
         for (const consumer of consumers) {
             const consumerData = recorderResponse[consumer];
-            console.log(consumerData);
             for (const entry of consumerData) {
+                const start = new Date(entry.start);
+                const dateRep = start.toLocaleDateString("en-EN", {day: '2-digit'});
+                this.dayDizio[parseInt(dateRep)] = entry.mean;
                 if (entry.min < min) min = entry.min;
                 if (entry.max > max) max = entry.max;
                 mean = mean + entry.mean
@@ -944,6 +1004,7 @@ class TemperatureHeatmapCard extends LitElement {
         var lastTime = 0;
         for (const consumer of consumers) {
             const consumerData = recorderResponse[consumer];
+            if (consumerData) {
             var gridTemp = [];
             var prevDate = null;
             var hour;
@@ -953,6 +1014,7 @@ class TemperatureHeatmapCard extends LitElement {
                 lastTime = start.toLocaleDateString("en-EN", {day: '2-digit'});
                 lastHour = lastHour + entry.mean;
                 countHour = countHour + 1;
+            }
             }
         }
         this.lastHour = lastHour / countHour;
@@ -1000,6 +1062,7 @@ class TemperatureHeatmapCard extends LitElement {
         this.Day2 = (new Date(now - ((4+shiftDay) * 86400000))).getDate();
         this.Day1 = (new Date(now - ((5+shiftDay) * 86400000))).getDate();
         this.Day0 = (new Date(now - ((6+shiftDay) * 86400000))).getDate();
+        this.DayX = (new Date(now - ((7+shiftDay) * 86400000))).getDate();
         this.Day6L = this.getDayShortName((new Date(now - ((0+shiftDay) * 86400000))));
         this.Day5L = this.getDayShortName((new Date(now - ((1+shiftDay) * 86400000))));
         this.Day4L = this.getDayShortName((new Date(now - ((2+shiftDay) * 86400000))));
