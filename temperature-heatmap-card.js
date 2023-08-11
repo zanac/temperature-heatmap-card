@@ -1,3 +1,8 @@
+/*import {
+  LitElement,
+  html,
+  css,
+} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";*/
 const LitElement = Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
 const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
@@ -20,6 +25,7 @@ class TemperatureHeatmapCard extends LitElement {
     this.max = -9999;
     this.mean = -9999;
     this.dayDizio = {};
+    this.dayDizioPartial = {};
     this.responseComplete = false;
     this.id = Math.random()
       .toString(36)
@@ -123,8 +129,8 @@ class TemperatureHeatmapCard extends LitElement {
         nowDay = this.dayDizio[this.Day5];
       }
       if (pos == "6") {
-        prevDay = this.dayDizio[this.Day5];
-        prevDayX = this.dayDizio[this.Day4];
+        prevDay = this.dayDizioPartial[this.Day5];
+        prevDayX = this.dayDizioPartial[this.Day5];
         nowDay = this.dayDizio[this.Day6];
       }
 
@@ -993,6 +999,20 @@ class TemperatureHeatmapCard extends LitElement {
         this.render();
   }
 
+  loaderResponsePartial(recorderResponse) {
+        var customtable = JSON.stringify(recorderResponse);
+        var consumers = [this.config.entity];
+        for (const consumer of consumers) {
+            const consumerData = recorderResponse[consumer];
+            for (const entry of consumerData) {
+                const start = new Date(entry.start);
+                const dateRep = start.toLocaleDateString("en-EN", {day: '2-digit'});
+                this.dayDizioPartial[parseInt(dateRep)] = entry.mean;
+            }
+        }
+        this.render();
+  }
+
   getMonthShortName(monthNo) {
     const date = new Date();
     date.setMonth(monthNo);
@@ -1041,6 +1061,9 @@ class TemperatureHeatmapCard extends LitElement {
         startTime.setHours(0, 0, 0);
         var endTime = new Date(now - (shiftDay * 86400000))
         endTime.setHours(23, 59, 0);
+        var endTimeYesterday = new Date(now - (shiftDay * 86400000))
+        var startTimeYesterday = new Date(now - (shiftDay * 86400000))
+        startTimeYesterday.setHours(0, 0, 0);
         this.myhass.callWS({
             'type': 'recorder/statistics_during_period',
             'statistic_ids': [this.config.entity],
@@ -1061,6 +1084,17 @@ class TemperatureHeatmapCard extends LitElement {
             "start_time": startTime,
             "end_time": endTime
         }).then(this.loaderResponseMin.bind(this),
+                this.loaderFailed.bind(this));
+        this.myhass.callWS({
+            'type': 'recorder/statistics_during_period',
+            'statistic_ids': [this.config.entity],
+            "types": [
+                "mean"
+            ],
+            "period": "day",
+            "start_time": startTimeYesterday,
+            "end_time": endTimeYesterday
+        }).then(this.loaderResponsePartial.bind(this),
                 this.loaderFailed.bind(this));
         
         startTime = new Date(now - ((days+shiftDay) * 86400000))
