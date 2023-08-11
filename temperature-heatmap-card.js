@@ -99,7 +99,7 @@ class TemperatureHeatmapCard extends LitElement {
 
       if (pos == "0") {
         prevDay = this.dayDizio[this.DayX];
-        prevDayX = this.dayDizio[this.DayX];
+        prevDayX = this.dayDizio[this.DayY];
         nowDay = this.dayDizio[this.Day0];
       }
       if (pos == "1") {
@@ -150,10 +150,10 @@ class TemperatureHeatmapCard extends LitElement {
          icona = "arrow-up-bold-box";
          icona_color = "#ff0000";
       } else if (prio == 1 && prevDayX > nowDay) {
-         icona = "arrow-down-bold-box";                                                                                                                
-         icona_color = "#106111";                                                                                                                      
+         icona = "arrow-down-bold-box";
+         icona_color = "#106111";
       } else {
-         icona = "arrow-up-bold-box";                                                                                                                  
+         icona = "arrow-up-bold-box";
          icona_color = "#ff0000";
       }
       
@@ -609,13 +609,14 @@ class TemperatureHeatmapCard extends LitElement {
     this.replaceDay(6, this.Day6, this.Day6L);
     var rightButton = this.shadowRoot.getElementById(this.id+"rightButton");
     var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
+    
     if (rightButton) {
       if (this.DayNOW == this.Day6) { rightButton.style.visibility = "hidden"; }
       else { rightButton.style.visibility = "visible"; }
 
     }
     if (leftButton) {
-      if (grid7[0][0] == -999 && grid7[0][11] == -999) { leftButton.style.visibility = "hidden"; }
+      if ((grid7[0][0] == -999 && grid7[0][11] == -999) || (this.dayDizio[this.DayY] === undefined)) { leftButton.style.visibility = "hidden"; }
       else { leftButton.style.visibility = "visible"; }
     }
     
@@ -995,13 +996,7 @@ class TemperatureHeatmapCard extends LitElement {
         this.max = parseFloat(max).toFixed(2);
         this.mean = parseFloat(mean).toFixed(2);
         this.responseComplete = true;
-        this.replaceDay(0, this.Day0, this.Day0L);
-        this.replaceDay(1, this.Day1, this.Day1L);
-        this.replaceDay(2, this.Day2, this.Day2L);
-        this.replaceDay(3, this.Day3, this.Day3L);
-        this.replaceDay(4, this.Day4, this.Day4L);
-        this.replaceDay(5, this.Day5, this.Day5L);
-        this.replaceDay(6, this.Day6, this.Day6L);
+        this.render();
   }
 
   getMonthShortName(monthNo) {
@@ -1048,7 +1043,7 @@ class TemperatureHeatmapCard extends LitElement {
         var shiftDay = this.shiftDay;
         const now = new Date();
         this.grid_status = undefined;
-        var startTime = new Date(now - ((days+shiftDay) * 86400000))
+        var startTime = new Date(now - ((days+shiftDay+1) * 86400000))
         startTime.setHours(0, 0, 0);
         var endTime = new Date(now - (shiftDay * 86400000))
         endTime.setHours(23, 59, 0);
@@ -1085,6 +1080,7 @@ class TemperatureHeatmapCard extends LitElement {
         this.Day1 = (new Date(now - ((5+shiftDay) * 86400000))).getDate();
         this.Day0 = (new Date(now - ((6+shiftDay) * 86400000))).getDate();
         this.DayX = (new Date(now - ((7+shiftDay) * 86400000))).getDate();
+        this.DayY = (new Date(now - ((8+shiftDay) * 86400000))).getDate();
         this.Day6L = this.getDayShortName((new Date(now - ((0+shiftDay) * 86400000))));
         this.Day5L = this.getDayShortName((new Date(now - ((1+shiftDay) * 86400000))));
         this.Day4L = this.getDayShortName((new Date(now - ((2+shiftDay) * 86400000))));
