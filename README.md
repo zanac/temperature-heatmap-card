@@ -33,7 +33,8 @@ type: custom:temperature-heatmap-card
 entity: sensor.your_sensor
 title: Card Title
 month_label: true/false
-day_label: true/label
+day_label: true/false
+footer: true/false
 ```
 
 ## About me
