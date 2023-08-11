@@ -1,3 +1,8 @@
+/*import {
+  LitElement,
+  html,
+  css,
+} from "https://unpkg.com/lit-element@2.0.1/lit-element.js?module";*/
 const LitElement = Object.getPrototypeOf(customElements.get("ha-panel-lovelace"));
 const html = LitElement.prototype.html;
 const css = LitElement.prototype.css;
@@ -20,6 +25,7 @@ class TemperatureHeatmapCard extends LitElement {
     this.max = -9999;
     this.mean = -9999;
     this.dayDizio = {};
+    this.responseComplete = false;
     this.id = Math.random()
       .toString(36)
       .substr(2, 9);
@@ -46,6 +52,8 @@ class TemperatureHeatmapCard extends LitElement {
   }
 
   onClickLeft(ev, shiftDay) {
+    this.grid = [];
+    this.responseComplete = false;
     ev.stopPropagation();
     this.shiftDay = this.shiftDay + shiftDay;
     const entityId = this.config.entity;
@@ -146,7 +154,8 @@ class TemperatureHeatmapCard extends LitElement {
          icona_color = "#ff0000";
       }
       
-      var trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
+      var trend = "";
+      if (this.responseComplete) trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
       if (this.config.day_label !== undefined) day_label = this.config.day_label;
       if (!day_label) theDiv.innerHTML = text + "<br/>" + trend;
       else theDiv.innerHTML  = text + "<br/>" + trend + letter;
@@ -154,6 +163,8 @@ class TemperatureHeatmapCard extends LitElement {
   }
 
   onClickRight(ev, shiftDay) {
+    this.grid = [];
+    this.responseComplete = false;
     this.shiftDay = this.shiftDay - shiftDay;
     const entityId = this.config.entity;
     this.get_recorder([entityId], 7);
@@ -980,6 +991,14 @@ class TemperatureHeatmapCard extends LitElement {
         this.min = parseFloat(min).toFixed(2);;
         this.max = parseFloat(max).toFixed(2);
         this.mean = parseFloat(mean).toFixed(2);
+        this.responseComplete = true;
+        this.replaceDay(0, this.Day0, this.Day0L);
+        this.replaceDay(1, this.Day1, this.Day1L);
+        this.replaceDay(2, this.Day2, this.Day2L);
+        this.replaceDay(3, this.Day3, this.Day3L);
+        this.replaceDay(4, this.Day4, this.Day4L);
+        this.replaceDay(5, this.Day5, this.Day5L);
+        this.replaceDay(6, this.Day6, this.Day6L);
   }
 
   getMonthShortName(monthNo) {
