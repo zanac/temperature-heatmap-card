@@ -128,9 +128,14 @@ class TemperatureHeatmapCard extends LitElement {
         prevDayX = this.dayDizio[this.Day3];
         nowDay = this.dayDizio[this.Day5];
       }
-      if (pos == "6") {
+      if (pos == "6" && this.DayNOW == this.Day6) {
         prevDay = this.dayDizioPartial[this.Day5];
         prevDayX = this.dayDizioPartial[this.Day5];
+        nowDay = this.dayDizio[this.Day6];
+      }
+      if (pos == "6" && this.DayNOW != this.Day6) {
+        prevDay = this.dayDizio[this.Day5];
+        prevDayX = this.dayDizio[this.Day4];
         nowDay = this.dayDizio[this.Day6];
       }
 
