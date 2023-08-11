@@ -438,7 +438,7 @@ class TemperatureHeatmapCard extends LitElement {
     else return temp;
   }
 
-  render({ config } = this) {
+  render() {
         // We may be trying to render before we've received the recorder data.
       var gridHTML = "";
       var grid7 = [[-999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999, -999],
@@ -611,15 +611,14 @@ class TemperatureHeatmapCard extends LitElement {
     var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
     
     if (rightButton) {
-      if (this.DayNOW == this.Day6) { rightButton.style.visibility = "hidden"; }
-      else { rightButton.style.visibility = "visible"; }
+      if (this.DayNOW == this.Day6) { rightButton.style.display = "none"; }
+      else { rightButton.style.removeProperty('display'); }
 
     }
     if (leftButton) {
-      if ((grid7[0][0] == -999 && grid7[0][11] == -999) || (this.dayDizio[this.DayY] === undefined)) { leftButton.style.visibility = "hidden"; }
-      else { leftButton.style.visibility = "visible"; }
+      if ((grid7[0][0] == -999 && grid7[0][11] == -999) || (this.dayDizio[this.DayY] === undefined)) { leftButton.style.display = "none"; }
+      else { leftButton.style.removeProperty('display'); }
     }
-    
 
     return html`
         <ha-card header="${this.config.title}" id="card">
@@ -920,11 +919,11 @@ class TemperatureHeatmapCard extends LitElement {
               <tr>
                    <td width="16%"></td>
                    <td width="10%" style="white-space:nowrap;">
-		      <ha-icon class="ha-icon-big" style='color:#7d8db8;' id="${this.id}leftButton" icon='mdi:chevron-left-box-outline' @click=${e => this.onClickLeft(e, 1)}></ha-icon>
+		      <ha-icon style="display:none;color:#7d8db8" class="ha-icon-big" id="${this.id}leftButton" icon='mdi:chevron-left-box-outline' @click=${e => this.onClickLeft(e, 1)}></ha-icon>
                    </td>
                    <td width="58%"></td>
                    <td width="10%" style="white-space:nowrap;">
-		      <ha-icon class="ha-icon-big" style='color:#7d8db8;' id="${this.id}rightButton" icon='mdi:chevron-right-box-outline' @click=${e => this.onClickRight(e, 1)}></ha-icon>
+		      <ha-icon style="display:none;color:#7d8db8" class="ha-icon-big" id="${this.id}rightButton" icon='mdi:chevron-right-box-outline' @click=${e => this.onClickRight(e, 1)}></ha-icon>
                    </td>
                    <td width="6%"></td>
               </tr>
