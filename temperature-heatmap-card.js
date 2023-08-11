@@ -146,7 +146,7 @@ class TemperatureHeatmapCard extends LitElement {
 
       var icona = "";
       var icona_color = "";
-      if (delta0 <= 1.5 && delta1 <= 1.5) {
+      if (delta0 <= 1.8 && delta1 <= 1.8) {
          icona = "approximately-equal-box";
          icona_color = "#828282";
       } else if (prio == 0 && prevDay > nowDay) {
