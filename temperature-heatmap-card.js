@@ -146,7 +146,7 @@ class TemperatureHeatmapCard extends LitElement {
       } else if (prio == 0 && prevDay > nowDay) {
          icona = "arrow-down-bold-box";
          icona_color = "#106111";
-      } else if (prio == 0 && prevDayX < nowDay) {
+      } else if (prio == 0 && prevDay < nowDay) {
          icona = "arrow-up-bold-box";
          icona_color = "#ff0000";
       } else if (prio == 1 && prevDayX > nowDay) {
