@@ -1008,12 +1008,23 @@ class TemperatureHeatmapCard extends LitElement {
   loaderResponsePartial(recorderResponse) {
         var customtable = JSON.stringify(recorderResponse);
         var consumers = [this.config.entity];
+        var mean = 0;
+        var entryCount = 0;
+        var dateRepOld = 0;
         for (const consumer of consumers) {
             const consumerData = recorderResponse[consumer];
             for (const entry of consumerData) {
                 const start = new Date(entry.start);
                 const dateRep = start.toLocaleDateString("en-EN", {day: '2-digit'});
-                this.dayDizioPartial[parseInt(dateRep)] = entry.mean;
+                //this.dayDizioPartial[parseInt(dateRep)] = entry.mean;
+                mean = mean + entry.mean
+                entryCount = entryCount + 1;
+                if (parseInt(dateRep) != dateRepOld) {
+                    dateRepOld = parseInt(dateRep)
+                    mean = 0;
+                    entryCount = 0;
+                }
+                this.dayDizioPartial[parseInt(dateRep)] = mean / entryCount;
             }
         }
         this.render();
@@ -1070,6 +1081,7 @@ class TemperatureHeatmapCard extends LitElement {
         var endTimeYesterday = new Date(now - (1 * 86400000))
         var startTimeYesterday = new Date(now - (1 * 86400000))
         startTimeYesterday.setHours(0, 0, 0);
+        endTime.setHours(23, 59, 0);
         this.myhass.callWS({
             'type': 'recorder/statistics_during_period',
             'statistic_ids': [this.config.entity],
@@ -1097,7 +1109,7 @@ class TemperatureHeatmapCard extends LitElement {
             "types": [
                 "mean"
             ],
-            "period": "day",
+            "period": "hour",
             "start_time": startTimeYesterday,
             "end_time": endTimeYesterday
         }).then(this.loaderResponsePartial.bind(this),
