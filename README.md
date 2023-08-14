@@ -11,7 +11,7 @@ Custom card enabling [Temperature Heat maps](https://en.wikipedia.org/wiki/Heat_
   * About footer labels: footer is in English format, sorry.
 
 ## Support
-Hey dude! Help me out for a couple of :beers: or a :coffee:!
+Hey dude! Help me out for a couple of :beers: or a :coffee:!<br/>
 [![coffee](https://www.buymeacoffee.com/assets/img/custom_images/black_img.png)](https://bmc.link/zanac)
 
 ## Current state?
