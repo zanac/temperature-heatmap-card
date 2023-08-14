@@ -1,4 +1,4 @@
-# Temperature Heatmap card for Home Assistant
+# Temperature Heatmap card for Home Assistant v0.9
 Temperature Hetmap for Home Assistant
 ![image](https://github.com/zanac/temperature-heatmap-card/assets/21194919/f4b28ad0-5282-46de-acd1-50ad82ecb614)
 
