@@ -997,10 +997,12 @@ class TemperatureHeatmapCard extends LitElement {
                 entryCount = entryCount + 1;
             }
         }
-        mean = mean / entryCount;
-        this.min = parseFloat(min).toFixed(2);;
-        this.max = parseFloat(max).toFixed(2);
-        this.mean = parseFloat(mean).toFixed(2);
+        if (entryCount > 0) {
+            mean = mean / entryCount;
+            this.min = parseFloat(min).toFixed(2);;
+            this.max = parseFloat(max).toFixed(2);
+            this.mean = parseFloat(mean).toFixed(2);
+        }
         this.responseComplete = true;
         this.render();
   }
@@ -1021,8 +1023,8 @@ class TemperatureHeatmapCard extends LitElement {
                 entryCount = entryCount + 1;
                 if (parseInt(dateRep) != dateRepOld) {
                     dateRepOld = parseInt(dateRep)
-                    mean = 0;
-                    entryCount = 0;
+                    mean = entry.mean;
+                    entryCount = 1;
                 }
                 this.dayDizioPartial[parseInt(dateRep)] = mean / entryCount;
             }
@@ -1065,8 +1067,10 @@ class TemperatureHeatmapCard extends LitElement {
             }
             }
         }
-        this.lastHour = lastHour / countHour;
-        this.lastTime = lastTime;
+        if (countHour > 0) {
+            this.lastHour = lastHour / countHour;
+            this.lastTime = lastTime;
+        }
         this.render();
     }
 
