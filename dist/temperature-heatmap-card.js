@@ -53,12 +53,39 @@ class TemperatureHeatmapCard extends LitElement {
   }
 
   onClickLeft(ev, shiftDay) {
+    this.dayDizio = {};
+    this.dayDizioPartial = {};
+    var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
+    var rightButton = this.shadowRoot.getElementById(this.id+"rightButton");
+    if (leftButton) {
+      leftButton.style.display = "hidden";
+      rightButton.style.display = "hidden";
+    }
+
     this.grid = [];
     this.responseComplete = false;
     ev.stopPropagation();
     this.shiftDay = this.shiftDay + shiftDay;
     const entityId = this.config.entity;
     this.get_recorder([entityId], 7);
+  }
+
+  onClickRight(ev, shiftDay) {
+    this.dayDizio = {};
+    this.dayDizioPartial = {};
+    var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
+    var rightButton = this.shadowRoot.getElementById(this.id+"rightButton");
+    if (rightButton) {
+      leftButton.style.display = "hidden";
+      rightButton.style.display = "hidden";
+    }
+
+    this.grid = [];
+    this.responseComplete = false;
+    this.shiftDay = this.shiftDay - shiftDay;
+    const entityId = this.config.entity;
+    this.get_recorder([entityId], 7);
+    ev.stopPropagation();
   }
 
   onClickNumber(ev) {
@@ -170,15 +197,6 @@ class TemperatureHeatmapCard extends LitElement {
       if (!day_label) theDiv.innerHTML = text + "<br/>" + trend;
       else theDiv.innerHTML  = text + "<br/>" + trend + letter;
     }
-  }
-
-  onClickRight(ev, shiftDay) {
-    this.grid = [];
-    this.responseComplete = false;
-    this.shiftDay = this.shiftDay - shiftDay;
-    const entityId = this.config.entity;
-    this.get_recorder([entityId], 7);
-    ev.stopPropagation();
   }
 
   // The user supplied configuration. Throw an exception and Home Assistant
@@ -625,6 +643,18 @@ class TemperatureHeatmapCard extends LitElement {
     if (leftButton) {
       if ((grid7[0][0] == -999 && grid7[0][11] == -999) || (this.dayDizio[this.DayY] === undefined)) { leftButton.style.display = "none"; }
       else { leftButton.style.removeProperty('display'); }
+    }
+
+    const stateAttributes = this.myhass.states[this.config.entity].attributes;
+    if (stateAttributes.state_class === undefined || stateAttributes.state_class != "measurement") {
+      return html`
+        <ha-card header="${this.config.title}" id="card">
+            <div class="card-content">
+                            <p>This entity has a <code>state_class</code> attribute different then measurement.
+                            <p>This means that data won't be saved to Long Term Statistics, which
+                            we use to drive the heatmap; no results will be shown.</p>
+            </div>
+        </hd-card>`;
     }
 
     return html`
