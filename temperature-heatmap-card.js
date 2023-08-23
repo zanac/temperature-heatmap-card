@@ -26,7 +26,7 @@ class TemperatureHeatmapCard extends LitElement {
     this.mean = -9999;
     this.dayDizio = {};
     this.dayDizioPartial = {};
-    this.responseComplete = false;
+    this.responseComplete = 0;
     this.id = Math.random()
       .toString(36)
       .substr(2, 9);
@@ -63,7 +63,7 @@ class TemperatureHeatmapCard extends LitElement {
     }
 
     this.grid = [];
-    this.responseComplete = false;
+    this.responseComplete = 0;
     ev.stopPropagation();
     this.shiftDay = this.shiftDay + shiftDay;
     const entityId = this.config.entity;
@@ -81,7 +81,7 @@ class TemperatureHeatmapCard extends LitElement {
     }
 
     this.grid = [];
-    this.responseComplete = false;
+    this.responseComplete = 0;
     this.shiftDay = this.shiftDay - shiftDay;
     const entityId = this.config.entity;
     this.get_recorder([entityId], 7);
@@ -192,7 +192,7 @@ class TemperatureHeatmapCard extends LitElement {
       //text = nowDay.toFixed(2);
       
       var trend = "";
-      if (this.responseComplete) trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
+      if (this.responseComplete >= 3) trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
       if (this.config.day_label !== undefined) day_label = this.config.day_label;
       if (!day_label) theDiv.innerHTML = text + "<br/>" + trend;
       else theDiv.innerHTML  = text + "<br/>" + trend + letter;
@@ -463,6 +463,11 @@ class TemperatureHeatmapCard extends LitElement {
     else return temp;
   }
 
+  refreshRender() {
+      if (this.responseComplete < 3) return;
+      this.render();
+  }
+
   render() {
         // We may be trying to render before we've received the recorder data.
       var gridHTML = "";
@@ -636,7 +641,7 @@ class TemperatureHeatmapCard extends LitElement {
     var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
     
     if (rightButton) {
-      if (this.DayNOW == this.Day6) { rightButton.style.display = "none"; }
+      if ((this.DayNOW == this.Day6) && (this.MonthNOW == this.Month6)) { rightButton.style.display = "none"; }
       else { rightButton.style.removeProperty('display'); }
 
     }
@@ -1003,7 +1008,7 @@ class TemperatureHeatmapCard extends LitElement {
             gridTemp.splice(hour + 1);
             this.grid = grid;
         }
-        this.render();
+        this.refreshRender();
   }
 
   loaderResponseMin(recorderResponse) {
@@ -1033,8 +1038,8 @@ class TemperatureHeatmapCard extends LitElement {
             this.max = parseFloat(max).toFixed(2);
             this.mean = parseFloat(mean).toFixed(2);
         }
-        this.responseComplete = true;
-        this.render();
+        this.responseComplete = this.responseComplete + 1;
+        this.refreshRender();
   }
 
   loaderResponsePartial(recorderResponse) {
@@ -1059,7 +1064,8 @@ class TemperatureHeatmapCard extends LitElement {
                 this.dayDizioPartial[parseInt(dateRep)] = mean / entryCount;
             }
         }
-        this.render();
+        this.responseComplete = this.responseComplete + 1;
+        this.refreshRender();
   }
 
   getMonthShortName(monthNo) {
@@ -1085,23 +1091,24 @@ class TemperatureHeatmapCard extends LitElement {
         for (const consumer of consumers) {
             const consumerData = recorderResponse[consumer];
             if (consumerData) {
-            var gridTemp = [];
-            var prevDate = null;
-            var hour;
-            for (const entry of consumerData) {
-                const start = new Date(entry.start);
-                hour = start.getHours();
-                lastTime = start.toLocaleDateString("en-EN", {day: '2-digit'});
-                lastHour = lastHour + entry.mean;
-                countHour = countHour + 1;
-            }
+                var gridTemp = [];
+                var prevDate = null;
+                var hour;
+                for (const entry of consumerData) {
+                    const start = new Date(entry.start);
+                    hour = start.getHours();
+                    lastTime = start.toLocaleDateString("en-EN", {day: '2-digit'});
+                    lastHour = lastHour + entry.mean;
+                    countHour = countHour + 1;
+                }
             }
         }
         if (countHour > 0) {
             this.lastHour = lastHour / countHour;
             this.lastTime = lastTime;
         }
-        this.render();
+        this.responseComplete = this.responseComplete + 1;
+        this.refreshRender();
     }
 
   get_recorder(consumers, days) {
