@@ -32,10 +32,11 @@ If you use [HACS](https://hacs.xyz) as-is, this card can be added as a **custom 
   * Add `/local/temperature-heatmap-card.js` in your Resource config, type of `JavaScript Module`.
 
 ### Configuration using the GUI
-Just add a temperature sensor and a card title!
+Just add a temperature sensor a card title and play with options! The preview, sorry, don't work you should save after change an option.
+![image](https://github.com/zanac/temperature-heatmap-card/assets/21194919/73afea00-83a2-45aa-bb72-2da965f30a29)
+
 
 ### Configuration using YAML
-Sorry, for now the only way is use YAML!
 Minimal example
 ```
 type: custom:temperature-heatmap-card
