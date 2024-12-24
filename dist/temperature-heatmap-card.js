@@ -121,6 +121,7 @@ class TemperatureHeatmapCard extends LitElement {
     var theDiv = this.shadowRoot.getElementById(this.id+"DAY"+pos);
     if (theDiv) {
       var day_label = false;
+      var day_trend = false;
       var prevDay = 0;
       var prevDayX = 0;
       var nowDay = 0;
@@ -194,6 +195,8 @@ class TemperatureHeatmapCard extends LitElement {
       var trend = "";
       if (this.responseComplete >= 3) trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
       if (this.config.day_label !== undefined) day_label = this.config.day_label;
+      if (this.config.day_trend !== undefined) day_trend = this.config.day_trend;
+      if (!day_trend) trend = "";
       if (!day_label) theDiv.innerHTML = text + "<br/>" + trend;
       else theDiv.innerHTML  = text + "<br/>" + trend + letter;
     }
@@ -436,10 +439,15 @@ class TemperatureHeatmapCard extends LitElement {
     var minimum = -5;
     var maximum = 35;
     var humidity = false;
+    var fahrenheit = false;
     //if (this.config.humidity !== undefined) humidity = this.config.humidity;
     const entityId = this.config.entity;
     const consumerAttributes = this.myhass.states[this.config.entity].attributes;
     if (consumerAttributes.device_class == "humidity") humidity = true;
+    if (consumerAttributes.unit_of_measurement == "F") fahrenheit = true;
+    if (fahrenheit) {
+       temp = (temp - 32) * 5 / 9;
+    }
     if (humidity) {
        if (temp <= 58) return "009f60";
        temp = 100 - temp;
@@ -504,18 +512,18 @@ class TemperatureHeatmapCard extends LitElement {
         if (arrTemp[10] == "") arrTemp[10] = 0;
         if (arrTemp[11] == "") arrTemp[11] = 0;
         if (arrTemp[12] == "") arrTemp[12] = 0;
-        if (arrTemp[13] == "") arrTemp[13] = 0;                                                                                                        
-        if (arrTemp[14] == "") arrTemp[14] = 0;                                                                                                        
-        if (arrTemp[15] == "") arrTemp[15] = 0;                                                                                                        
+        if (arrTemp[13] == "") arrTemp[13] = 0;
+        if (arrTemp[14] == "") arrTemp[14] = 0;
+        if (arrTemp[15] == "") arrTemp[15] = 0;
         if (arrTemp[16] == "") arrTemp[16] = 0;
-        if (arrTemp[17] == "") arrTemp[17] = 0;                                                                                                        
+        if (arrTemp[17] == "") arrTemp[17] = 0;
         if (arrTemp[18] == "") arrTemp[18] = 0;
-        if (arrTemp[19] == "") arrTemp[19] = 0;                                                                                                        
-        if (arrTemp[20] == "") arrTemp[20] = 0;                                                                                                        
+        if (arrTemp[19] == "") arrTemp[19] = 0;
+        if (arrTemp[20] == "") arrTemp[20] = 0;
         if (arrTemp[21] == "") arrTemp[21] = 0;
         if (arrTemp[22] == "") arrTemp[22] = 0;
         if (arrTemp[23] == "") arrTemp[23] = 0;
-	var hour00 = ((parseFloat(arrTemp[0]) + parseFloat(arrTemp[1]))/2);
+        var hour00 = ((parseFloat(arrTemp[0]) + parseFloat(arrTemp[1]))/2);
         var hour02 = ((parseFloat(arrTemp[2]) + parseFloat(arrTemp[3]))/2);
         var hour04 = ((parseFloat(arrTemp[4]) + parseFloat(arrTemp[5]))/2);
         var hour06 = ((parseFloat(arrTemp[6]) + parseFloat(arrTemp[7]))/2);
@@ -1247,6 +1255,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
             title: undefined,
             month_label: undefined,
             day_label: undefined,
+            day_trend: undefined,
             footer: undefined
         };
     }
@@ -1269,6 +1278,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         this.title = this.myhass.states[this._config.title];
         this.month_label = this.myhass.states[this._config.month_label];
         this.day_label = this.myhass.states[this._config.day_label];
+        this.day_trend = this.myhass.states[this._config.day_trend];
         this.footer = this.myhass.states[this._config.footer];
     }
 
@@ -1321,6 +1331,9 @@ export class TemperatureHeatmapCardEditor extends LitElement {
             <h3>Show Day Label</h3>
             <ha-switch
               .checked=${this._config.day_label !== undefined && this._config.day_label !== false} .configValue=${"day_label"} .value=${this._config.day_label}></ha-switch>
+            <h3>Show Day Trend</h3>
+            <ha-switch
+              .checked=${this._config.day_trend !== undefined && this._config.day_trend !== false} .configValue=${"day_trend"} .value=${this._config.day_trend}></ha-switch>
             <h3>Stat Footer</h3>
             <ha-switch
               .checked=${this._config.footer !== undefined && this._config.footer !== false} .configValue=${"footer"} .value=${this._config.footer}></ha-switch>
@@ -1359,7 +1372,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         root.addEventListener("change", (ev) => {
             ev.stopPropagation();
             const key = ev.target.configValue;
-            if (key != "month_label" && key != 'day_label' && key != 'footer') return;
+            if (key != "month_label" && key != 'day_label' && key != 'day_trend' && key != 'footer') return;
             const val = ev.target.checked;
             var config = JSON.parse(JSON.stringify(this._config));
 
