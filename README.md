@@ -17,6 +17,7 @@ Hey dude! Help me out for a couple of :beers: or a :coffee:!<br/>
 ## Current state?
 * Spaghetti code
 * Need a lot of small feature that i plan
+* Now with fahrenheit!
 * Anyway... it works!
 
 ## Installation
