@@ -228,6 +228,7 @@ class TemperatureHeatmapCard extends LitElement {
     var hours = date.getHours();
     var minutes = date.getMinutes();
     var month;
+    var _day;
     //var ampm = hours >= 12 ? 'pm' : 'am';
     //hours = hours % 12;
     //hours = hours ? hours : 12; // the hour '0' should be '12'
@@ -238,17 +239,21 @@ class TemperatureHeatmapCard extends LitElement {
     month = date.getMonth() + 1;
     if (month < 10)
       month = "0" + month;
+
+    _day = date.getDate();
+    if (_day < 10)
+      _day = "0" + _day;
    
     minutes = minutes < 10 ? '0' + minutes : minutes;
     var strTime = hours;// + ':' + minutes;
-    return date.getFullYear() + '-' + month + '-' + date.getDate() + " " + strTime;
+    return date.getFullYear() + '-' + month + '-' + _day + " " + strTime;
   }
 
   lastDay() {
-      var dataToday = this.formatDate(new Date());
+      var dataToday = this.formatDate(new Date()).substr(0,10);
       const now = new Date();
       var day6full = this.formatDate(new Date(now - ((this.shiftDay) * 86400000))).substr(0,10);
-      if (day6full == dataToday.substr(0,10)) return true;
+      if (day6full == dataToday) return true;
       return false;
   }
 
@@ -342,6 +347,15 @@ class TemperatureHeatmapCard extends LitElement {
         return html`12`;
   }
 
+  getWidthCell() {
+      var day_forecast = "";
+      if (this.lastDay() && this.config.day_forecast !== undefined) day_forecast = this.config.day_forecast;
+      if (day_forecast)
+        return html`min-width:13px`;
+      else
+        return html`min-width:0px`;
+  }
+
   getHeadTable() {
     var month_label = false;
     if (this.config.month_label !== undefined) month_label = this.config.month_label;
@@ -363,6 +377,7 @@ class TemperatureHeatmapCard extends LitElement {
     var TR04 = this.shadowRoot.getElementById(this.id+"TR04")
     var TR05 = this.shadowRoot.getElementById(this.id+"TR05")
     var TR06 = this.shadowRoot.getElementById(this.id+"TR06")
+    var TR07 = this.shadowRoot.getElementById(this.id+"TR07")
     var TD00 = this.shadowRoot.getElementById(this.id+"TD00")
     var TD10 = this.shadowRoot.getElementById(this.id+"TD10")
     var TD11 = this.shadowRoot.getElementById(this.id+"TD11")
@@ -376,6 +391,8 @@ class TemperatureHeatmapCard extends LitElement {
     var TD51 = this.shadowRoot.getElementById(this.id+"TD51")
     var TD60 = this.shadowRoot.getElementById(this.id+"TD60")
     var TD61 = this.shadowRoot.getElementById(this.id+"TD61")
+    var TD70 = this.shadowRoot.getElementById(this.id+"TD70")
+    var TD71 = this.shadowRoot.getElementById(this.id+"TD71")
     var DAY0 = this.shadowRoot.getElementById(this.id+"DAY0");
     var DAY1 = this.shadowRoot.getElementById(this.id+"DAY1");
     var DAY2 = this.shadowRoot.getElementById(this.id+"DAY2");
@@ -812,7 +829,6 @@ class TemperatureHeatmapCard extends LitElement {
       this.replaceText("79", grid7[7][9]); //trick
       this.replaceText("7a", grid7[7][10]); //trick
       this.replaceText("7b", grid7[7][11]); //trick
-
     }
     this.replaceDay(0, this.Day0, this.Day0L);
     this.replaceDay(1, this.Day1, this.Day1L);
@@ -826,6 +842,14 @@ class TemperatureHeatmapCard extends LitElement {
     }
     var rightButton = this.shadowRoot.getElementById(this.id+"rightButton");
     var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
+    var TDDAY0 = this.shadowRoot.getElementById(this.id+"TDDAY0");
+    var TDDAY1 = this.shadowRoot.getElementById(this.id+"TDDAY1");
+    var TDDAY2 = this.shadowRoot.getElementById(this.id+"TDDAY2");
+    var TDDAY3 = this.shadowRoot.getElementById(this.id+"TDDAY3");
+    var TDDAY4 = this.shadowRoot.getElementById(this.id+"TDDAY4");
+    var TDDAY5 = this.shadowRoot.getElementById(this.id+"TDDAY5");
+    var TDDAY6 = this.shadowRoot.getElementById(this.id+"TDDAY6");
+    var TDDAY7 = this.shadowRoot.getElementById(this.id+"TDDAY7");
     
     if (rightButton) {
       if ((this.DayNOW == this.Day6) && (this.MonthNOW == this.Month6)) { rightButton.style.display = "none"; }
@@ -835,6 +859,19 @@ class TemperatureHeatmapCard extends LitElement {
     if (leftButton) {
       if ((grid7[0][0] == -999 && grid7[0][11] == -999) || (this.dayDizio[this.DayY] === undefined)) { leftButton.style.display = "none"; }
       else { leftButton.style.removeProperty('display'); }
+    }
+
+    if (TDDAY0 && day_forecast) {
+      if (this.lastDay()) {
+        TDDAY0.style.setProperty("min-width", "13px");
+        TDDAY1.style.setProperty("min-width", "13px");
+        TDDAY2.style.setProperty("min-width", "13px");
+        TDDAY3.style.setProperty("min-width", "13px");
+        TDDAY4.style.setProperty("min-width", "13px");
+        TDDAY5.style.setProperty("min-width", "13px");
+        TDDAY6.style.setProperty("min-width", "13px");
+        TDDAY7.style.setProperty("min-width", "13px");
+      }
     }
 
     const stateAttributes = this.myhass.states[this.config.entity].attributes;
@@ -857,14 +894,14 @@ class TemperatureHeatmapCard extends LitElement {
       <tbody>
           <tr>                    
               <td width="16%" ></td>
-                  <td width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY0">${this.Day0}</div></td>
-                  <td width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY1">${this.Day1}</div></td>
-                  <td width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY2">${this.Day2}</div></td>
-                  <td width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY3">${this.Day3}</div></td>
-                  <td width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY4">${this.Day4}</div></td>
-                  <td width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY5">${this.Day5}</div></td>
-                  <td width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY6">${this.Day6}</div></td>
-                  <td width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;"><div id="${this.id}DAY7">${this.Day7}</div></td>
+                  <td id="${this.id}TDDAY0" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY0">${this.Day0}</div></td>
+                  <td id="${this.id}TDDAY1" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY1">${this.Day1}</div></td>
+                  <td id="${this.id}TDDAY2" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY2">${this.Day2}</div></td>
+                  <td id="${this.id}TDDAY3" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY3">${this.Day3}</div></td>
+                  <td id="${this.id}TDDAY4" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY4">${this.Day4}</div></td>
+                  <td id="${this.id}TDDAY5" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY5">${this.Day5}</div></td>
+                  <td id="${this.id}TDDAY6" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY6">${this.Day6}</div></td>
+                  <td id="${this.id}TDDAY7" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY7">${this.Day7}</div></td>
           </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>00:00</td>
                           <td id="${this.id}td00" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
@@ -1294,7 +1331,7 @@ class TemperatureHeatmapCard extends LitElement {
 
   getMonthShortName(monthNo) {
     const date = new Date();
-    date.setMonth(monthNo);
+    date.setMonth(parseInt(monthNo), 1);
     var mese = date.toLocaleString([], { month: 'short' });
     return mese[0].toUpperCase() + mese.substring(1);
   }
