@@ -204,6 +204,7 @@ class TemperatureHeatmapCard extends LitElement {
       if (this.responseComplete >= 3) trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
       if (this.config.day_label !== undefined) day_label = this.config.day_label;
       if (this.config.day_trend !== undefined) day_trend = this.config.day_trend;
+      if (this.config.force_fahrenheit !== undefined) force_fahrenheit = this.config.force_fahrenheit;
       if (this.config.day_forecast !== undefined) day_forecast = this.config.day_forecast;
       if (!day_trend) trend = "";
       if (!day_forecast) forecast = "";
@@ -583,6 +584,8 @@ class TemperatureHeatmapCard extends LitElement {
     var maximum = 35;
     var humidity = false;
     var fahrenheit = false;
+
+    if (this.config.force_fahrenheit !== undefined) fahrenheit = this.config.force_fahrenheit;
     //if (this.config.humidity !== undefined) humidity = this.config.humidity;
     const entityId = this.config.entity;
     const consumerAttributes = this.myhass.states[this.config.entity].attributes;
@@ -1488,6 +1491,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
             month_label: undefined,
             day_label: undefined,
             day_trend: undefined,
+            force_fahrenheit: undefined,
             day_forecast: undefined,
             footer: undefined
         };
@@ -1513,6 +1517,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         this.month_label = this.myhass.states[this._config.month_label];
         this.day_label = this.myhass.states[this._config.day_label];
         this.day_trend = this.myhass.states[this._config.day_trend];
+        this.force_fahrenheit = this.myhass.states[this._config.force_fahrenheit];
         this.day_forecast = this.myhass.states[this._config.day_forecast];
         this.footer = this.myhass.states[this._config.footer];
     }
@@ -1569,6 +1574,9 @@ export class TemperatureHeatmapCardEditor extends LitElement {
             <h3>Show Day Trend</h3>
             <ha-switch
               .checked=${this._config.day_trend !== undefined && this._config.day_trend !== false} .configValue=${"day_trend"} .value=${this._config.day_trend}></ha-switch>
+            <h3>Force Fahrenheit</h3>
+            <ha-switch
+              .checked=${this._config.force_fahrenheit !== undefined && this._config.force_fahrenheit !== false} .configValue=${"force_fahrenheit"} .value=${this._config.force_fahrenheit}></ha-switch>
             <h3>Day Forecast</h3>
             <ha-switch
               .checked=${this._config.day_forecast !== undefined && this._config.day_forecast !== false} .configValue=${"day_forecast"} .value=${this._config.day_forecast}></ha-switch>
@@ -1624,7 +1632,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
         root.addEventListener("change", (ev) => {
             ev.stopPropagation();
             const key = ev.target.configValue;
-            if (key != "month_label" && key != 'day_label' && key != 'day_trend' && key != 'day_forecast' && key != 'footer') return;
+            if (key != "month_label" && key != 'day_label' && key != 'day_trend' && key != 'force_fahrenheit' && key != 'day_forecast' && key != 'footer') return;
             const val = ev.target.checked;
             var config = JSON.parse(JSON.stringify(this._config));
 
