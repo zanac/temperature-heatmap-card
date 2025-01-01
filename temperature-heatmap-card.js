@@ -198,6 +198,11 @@ class TemperatureHeatmapCard extends LitElement {
          icona_color = "#ff0000";
       }
       //text = nowDay.toFixed(2);
+
+      if (pos == "7") {
+         icona = "weather-cloudy-clock";
+         icona_color = "#26768c";
+      }
       
       var trend = "";
       var forecast = "";
