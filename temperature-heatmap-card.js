@@ -201,6 +201,7 @@ class TemperatureHeatmapCard extends LitElement {
       
       var trend = "";
       var forecast = "";
+      var force_fahrenheit = false;
       if (this.responseComplete >= 3) trend = "<ha-icon style='color:"+icona_color+"' icon='mdi:"+icona+"'></ha-icon>";
       if (this.config.day_label !== undefined) day_label = this.config.day_label;
       if (this.config.day_trend !== undefined) day_trend = this.config.day_trend;
