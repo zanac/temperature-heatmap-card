@@ -57,6 +57,30 @@ class TemperatureHeatmapCard extends LitElement {
   }
 
   onClickLeft(ev, shiftDay) {
+    var TD60 = this.shadowRoot.getElementById(this.id+"td60")
+    var TD61 = this.shadowRoot.getElementById(this.id+"td61")
+    var TD62 = this.shadowRoot.getElementById(this.id+"td62")
+    var TD63 = this.shadowRoot.getElementById(this.id+"td63")
+    var TD64 = this.shadowRoot.getElementById(this.id+"td64")
+    var TD65 = this.shadowRoot.getElementById(this.id+"td65")
+    var TD66 = this.shadowRoot.getElementById(this.id+"td66")
+    var TD67 = this.shadowRoot.getElementById(this.id+"td67")
+    var TD68 = this.shadowRoot.getElementById(this.id+"td68")
+    var TD69 = this.shadowRoot.getElementById(this.id+"td69")
+    var TD6a = this.shadowRoot.getElementById(this.id+"td6a")
+    var TD6b = this.shadowRoot.getElementById(this.id+"td6b")
+    if (TD60) TD68.style.border = '0px dotted #000000';
+    if (TD61) TD68.style.border = '0px dotted #000000';
+    if (TD62) TD68.style.border = '0px dotted #000000';
+    if (TD63) TD68.style.border = '0px dotted #000000';
+    if (TD64) TD68.style.border = '0px dotted #000000';
+    if (TD65) TD68.style.border = '0px dotted #000000';
+    if (TD66) TD68.style.border = '0px dotted #000000';
+    if (TD67) TD68.style.border = '0px dotted #000000';
+    if (TD68) TD68.style.border = '0px dotted #000000';
+    if (TD69) TD68.style.border = '0px dotted #000000';
+    if (TD6a) TD68.style.border = '0px dotted #000000';
+    if (TD6b) TD68.style.border = '0px dotted #000000';
     this.dayDizio = {};
     this.dayDizioPartial = {};
     var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
@@ -354,6 +378,50 @@ class TemperatureHeatmapCard extends LitElement {
         return html`12`;
   }
 
+  getBorderCell(_id) {
+      var nowHour = parseInt(new Date().getHours() / 2);
+      var DayNOW1 = new Date(new Date()).getDate();
+      var TD60 = this.shadowRoot.getElementById(this.id+"td60")
+      var TD61 = this.shadowRoot.getElementById(this.id+"td61")
+      var TD62 = this.shadowRoot.getElementById(this.id+"td62")
+      var TD63 = this.shadowRoot.getElementById(this.id+"td63")
+      var TD64 = this.shadowRoot.getElementById(this.id+"td64")
+      var TD65 = this.shadowRoot.getElementById(this.id+"td65")
+      var TD66 = this.shadowRoot.getElementById(this.id+"td66")
+      var TD67 = this.shadowRoot.getElementById(this.id+"td67")
+      var TD68 = this.shadowRoot.getElementById(this.id+"td68")
+      var TD69 = this.shadowRoot.getElementById(this.id+"td69")
+      var TD6a = this.shadowRoot.getElementById(this.id+"td6a")
+      var TD6b = this.shadowRoot.getElementById(this.id+"td6b")
+      if (DayNOW1 == this.Day6) {
+        if (_id == "td60" && nowHour == 0 && TD60) TD60.style.border = '4px dotted #000000';
+        if (_id == "td61" && nowHour == 1 && TD61) TD61.style.border = '4px dotted #000000';
+        if (_id == "td62" && nowHour == 2 && TD62) TD62.style.border = '4px dotted #000000';
+        if (_id == "td63" && nowHour == 3 && TD63) TD63.style.border = '4px dotted #000000';
+        if (_id == "td64" && nowHour == 4 && TD64) TD64.style.border = '4px dotted #000000';
+        if (_id == "td65" && nowHour == 5 && TD65) TD65.style.border = '4px dotted #000000';
+        if (_id == "td66" && nowHour == 6 && TD66) TD66.style.border = '4px dotted #000000';
+        if (_id == "td67" && nowHour == 7 && TD67) TD67.style.border = '4px dotted #000000';
+        if (_id == "td68" && nowHour == 8 && TD68) TD68.style.border = '4px dotted #000000';
+        if (_id == "td69" && nowHour == 9 && TD69) TD69.style.border = '4px dotted #000000';
+        if (_id == "td6a" && nowHour == 10 && TD6a) TD6a.style.border = '4px dotted #000000';
+        if (_id == "td6b" && nowHour == 11 && TD6b) TD6b.style.border = '4px dotted #000000';
+      } else {
+        if (TD60) TD60.style.border = '0px dotted #000000';
+        if (TD61) TD61.style.border = '0px dotted #000000';
+        if (TD62) TD62.style.border = '0px dotted #000000';
+        if (TD63) TD63.style.border = '0px dotted #000000';
+        if (TD64) TD64.style.border = '0px dotted #000000';
+        if (TD65) TD65.style.border = '0px dotted #000000';
+        if (TD66) TD66.style.border = '0px dotted #000000';
+        if (TD67) TD67.style.border = '0px dotted #000000';
+        if (TD68) TD68.style.border = '0px dotted #000000';
+        if (TD69) TD69.style.border = '0px dotted #000000';
+        if (TD6a) TD6a.style.border = '0px dotted #000000';
+        if (TD6b) TD6b.style.border = '0px dotted #000000';
+      }
+  }
+
   getWidthCell() {
       var day_forecast = "";
       if (this.lastDay() && this.config.day_forecast !== undefined) day_forecast = this.config.day_forecast;
@@ -607,6 +675,12 @@ class TemperatureHeatmapCard extends LitElement {
        maximum = 90;
     }
     if (!humidity && Math.round(temp) >= 37) return "ff006a";
+    if (!humidity && Math.round(temp) <= -4) {
+    //#0000ed
+       var temp_rgb = parseInt(parseInt(Math.abs(Math.round(temp) - 4)) * 7.5);
+       if (temp_rgb > 255) temp_rgb = 255;
+       return temp_rgb.toString(16).padStart(2, '0') + "00ed";
+    }
     var valTemp = temp;
     if (valTemp < minimum) valTemp = minimum;
     if (valTemp > maximum) valTemp = maximum;
@@ -882,6 +956,19 @@ class TemperatureHeatmapCard extends LitElement {
         TDDAY7.style.setProperty("min-width", "13px");
       }
     }
+  
+    this.getBorderCell('td60');
+    this.getBorderCell('td61');
+    this.getBorderCell('td62');
+    this.getBorderCell('td63');
+    this.getBorderCell('td64');
+    this.getBorderCell('td65');
+    this.getBorderCell('td66');
+    this.getBorderCell('td67');
+    this.getBorderCell('td68');
+    this.getBorderCell('td69');
+    this.getBorderCell('td6a');
+    this.getBorderCell('td6b');
 
     const stateAttributes = this.myhass.states[this.config.entity].attributes;
     if (stateAttributes.state_class === undefined || stateAttributes.state_class != "measurement") {
