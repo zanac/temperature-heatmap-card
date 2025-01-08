@@ -373,9 +373,9 @@ class TemperatureHeatmapCard extends LitElement {
       var day_forecast = "";
       if (this.lastDay() && this.config.day_forecast !== undefined) day_forecast = this.config.day_forecast;
       if (day_forecast)
-        return html`10`;
+        return '10';
       else
-        return html`12`;
+        return '12';
   }
 
   getBorderCell(_id) {
@@ -426,9 +426,9 @@ class TemperatureHeatmapCard extends LitElement {
       var day_forecast = "";
       if (this.lastDay() && this.config.day_forecast !== undefined) day_forecast = this.config.day_forecast;
       if (day_forecast)
-        return html`min-width:13px`;
+        return 'min-width:13px';
       else
-        return html`min-width:0px`;
+        return 'min-width:0px';
   }
 
   getHeadTable() {
@@ -997,7 +997,7 @@ class TemperatureHeatmapCard extends LitElement {
                   <td id="${this.id}TDDAY4" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY4">${this.Day4}</div></td>
                   <td id="${this.id}TDDAY5" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY5">${this.Day5}</div></td>
                   <td id="${this.id}TDDAY6" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY6">${this.Day6}</div></td>
-                  <td id="${this.id}TDDAY7" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY7">${this.Day7}</div></td>
+                  <td id="${this.id}TDDAY7" width="${this.getWidthTable()}%" style="white-space: nowrap;text-align:center;vertical-align:middle;${this.getWidthCell}"><div id="${this.id}DAY7"></div></td>
           </tr>
               <tr><td style='white-space: nowrap;text-align:center;vertical-align:middle;'>00:00</td>
                           <td id="${this.id}td00" style="background-color:#808080;color:#ffffff;white-space: nowrap;text-align:center;vertical-align:middle;">
