@@ -1,5 +1,5 @@
 # Temperature Heatmap card for Home Assistant
-Temperature Hetmap for Home Assistant v0.9.9.7
+Temperature Hetmap for Home Assistant v0.9.9.8
 ![image](https://github.com/zanac/temperature-heatmap-card/assets/21194919/b0ea847c-fb91-4f28-84d0-d468e89a7af5)
 
 
@@ -51,6 +51,7 @@ day_forecast: true/false add forecast
 forecast_entity: enter a weather forecast sensor
 force_fahrenheit: true/false
 temp_adj: numeric_value (+- adj temperture of forecast by the value entered)
+decimal_point: true/false
 ```
 
 ## About me
