@@ -133,6 +133,7 @@ class TemperatureHeatmapCard extends LitElement {
         var text_dec = (Math.round(text * 10) / 10).toFixed(1);
         var text_int = parseInt(text_dec);
         var text_flo = parseInt(((Math.round(text * 10) / 10) - text_int) * 10);
+        if (text_flo < 0) text_flo = text_flo * -1;
         var text_html = text_int + ".<small>" + text_flo + "</small>";
         theDiv.innerHTML = text_html;
       }
@@ -769,11 +770,10 @@ class TemperatureHeatmapCard extends LitElement {
        maximum = 90;
     }
     if (!humidity && Math.round(temp) >= 37) return "ff006a";
-    if (!humidity && Math.round(temp) <= -4) {
-    //#0000ed
+    if (!humidity && Math.round(temp) < -5) {
        var temp_rgb = parseInt(parseInt(Math.abs(Math.round(temp) - 4)) * 7.5);
        if (temp_rgb > 255) temp_rgb = 255;
-       return temp_rgb.toString(16).padStart(2, '0') + "00ed";
+       return temp_rgb.toString(16).padStart(2, '0') + "00ff";
     }
     var valTemp = temp;
     if (valTemp < minimum) valTemp = minimum;
