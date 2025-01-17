@@ -384,8 +384,9 @@ class TemperatureHeatmapCard extends LitElement {
              if (ora == "08" && this.gridForecast[7][4] == -999) this.gridForecast[7][4] = d.temperature + temp_adj;
              if (ora == "10" && this.gridForecast[7][5] == -999) this.gridForecast[7][5] = d.temperature + temp_adj;
              if (ora == "12" && this.gridForecast[7][5] != -999 && this.gridForecast[7][6] == -999) this.gridForecast[7][6] = d.temperature + temp_adj;
-             if (ora == "12" && dayDiff == 1) {
-                this.forecastIcon = d.condition;
+             if (ora == "12" && dayDiff <= 1) {
+                if (this.forecastIcon === undefined) this.forecastIcon = d.condition;
+                //console.log(JSON.stringify(d));
              }
              if (ora == "14" && this.gridForecast[7][7] == -999) this.gridForecast[7][7] = d.temperature + temp_adj;
              if (ora == "16" && this.gridForecast[7][8] == -999) this.gridForecast[7][8] = d.temperature + temp_adj;
