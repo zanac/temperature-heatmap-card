@@ -14,8 +14,8 @@ class TemperatureHeatmapCard extends LitElement {
   // Whenever the last_render_ts reach 10 minutes
   // update your content.
   set hass(hass) {
-    //if (Date.now() - this.last_render_ts < 10 * 60 * 1000) {
-    if (Date.now() - this.last_render_ts < 1 * 60 * 500) {
+    if (Date.now() - this.last_render_ts < 10 * 60 * 1000) {
+    //if (Date.now() - this.last_render_ts < 1 * 60 * 500) {
       return;
     }
     this.myhass = hass;
