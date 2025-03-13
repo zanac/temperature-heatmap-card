@@ -970,7 +970,7 @@ class TemperatureHeatmapCard extends LitElement {
            if (this.DayNOW == this.Day6) grid7[6][this.hourIndex] = this.lastHour;
       } else {
            const entityId = this.config.entity;                                                                                                        
-           const state = hass.states[entityId];                                                                                                        
+           const state = this.myhass.states[entityId];                                                                                                        
            const stateStr = state ? state.state : "-999";                                                                                              
            grid7[6][this.hourIndex] = stateStr;                                                                                                        
       }
