@@ -943,31 +943,45 @@ class TemperatureHeatmapCard extends LitElement {
           if (this.gridForecast && this.gridForecast[7][jj] != -999 && grid7[7][jj] == -999) grid7[7][jj] = this.gridForecast[7][jj];
       }
       if (this.lastHour !== undefined) {
-           if (this.lastTime == "00") i = 0;
-           if (this.lastTime == "01") i = 0;
-           if (this.lastTime == "02") i = 1;
-           if (this.lastTime == "03") i = 1;
-           if (this.lastTime == "04") i = 2;
-           if (this.lastTime == "05") i = 2;
-           if (this.lastTime == "06") i = 3;
-           if (this.lastTime == "07") i = 3;
-           if (this.lastTime == "08") i = 4;
-           if (this.lastTime == "09") i = 4;
-           if (this.lastTime == "10") i = 5;
-           if (this.lastTime == "11") i = 5;
-           if (this.lastTime == "12") i = 6;
-           if (this.lastTime == "13") i = 6;
-           if (this.lastTime == "14") i = 7;
-           if (this.lastTime == "15") i = 7;
-           if (this.lastTime == "16") i = 8;
-           if (this.lastTime == "17") i = 8;
-           if (this.lastTime == "18") i = 9;
-           if (this.lastTime == "19") i = 9;
-           if (this.lastTime == "20") i = 10;
-           if (this.lastTime == "21") i = 10;
-           if (this.lastTime == "22") i = 11;
-           if (this.lastTime == "23") i = 11;
-           if (this.DayNOW == this.Day6) grid7[6][this.hourIndex] = this.lastHour;
+           var lastTimeNow = (new Date()).toLocaleDateString("en-EN", {day: '2-digit'});
+           if (lastTimeNow == "00") i = 0;
+           if (lastTimeNow == "01") i = 0;
+           if (lastTimeNow == "02") i = 1;
+           if (lastTimeNow == "03") i = 1;
+           if (lastTimeNow == "04") i = 2;
+           if (lastTimeNow == "05") i = 2;
+           if (lastTimeNow == "06") i = 3;
+           if (lastTimeNow == "07") i = 3;
+           if (lastTimeNow == "08") i = 4;
+           if (lastTimeNow == "09") i = 4;
+           if (lastTimeNow == "10") i = 5;
+           if (lastTimeNow == "11") i = 5;
+           if (lastTimeNow == "12") i = 6;
+           if (lastTimeNow == "13") i = 6;
+           if (lastTimeNow == "14") i = 7;
+           if (lastTimeNow == "15") i = 7;
+           if (lastTimeNow == "16") i = 8;
+           if (lastTimeNow == "17") i = 8;
+           if (lastTimeNow == "18") i = 9;
+           if (lastTimeNow == "19") i = 9;
+           if (lastTimeNow == "20") i = 10;
+           if (lastTimeNow == "21") i = 10;
+           if (lastTimeNow == "22") i = 11;
+           if (lastTimeNow == "23") i = 11;
+           if (this.DayNOW == this.Day6) {
+              if (i > this.hourIndex) {
+                  const entityId = this.config.entity;
+                  const state = this.myhass.states[entityId];
+                  const stateStr = state ? state.state : "-999";
+                  grid7[6][this.hourIndex] = stateStr;
+              } else if (this.lastHour !== undefined) grid7[6][this.hourIndex] = this.lastHour;
+              else {
+                  const entityId = this.config.entity;
+                  const state = this.myhass.states[entityId];
+                  const stateStr = state ? state.state : "-999";
+                  grid7[6][this.hourIndex] = stateStr;
+              }
+           }
       } else {
            const entityId = this.config.entity;                                                                                                        
            const state = this.myhass.states[entityId];                                                                                                        
