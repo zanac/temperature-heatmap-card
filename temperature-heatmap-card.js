@@ -67,18 +67,18 @@ class TemperatureHeatmapCard extends LitElement {
     var TD69 = this.shadowRoot.getElementById(this.id+"td69")
     var TD6a = this.shadowRoot.getElementById(this.id+"td6a")
     var TD6b = this.shadowRoot.getElementById(this.id+"td6b")
-    if (TD60) TD68.style.border = '0px dotted #000000';
-    if (TD61) TD68.style.border = '0px dotted #000000';
-    if (TD62) TD68.style.border = '0px dotted #000000';
-    if (TD63) TD68.style.border = '0px dotted #000000';
-    if (TD64) TD68.style.border = '0px dotted #000000';
-    if (TD65) TD68.style.border = '0px dotted #000000';
-    if (TD66) TD68.style.border = '0px dotted #000000';
-    if (TD67) TD68.style.border = '0px dotted #000000';
-    if (TD68) TD68.style.border = '0px dotted #000000';
-    if (TD69) TD68.style.border = '0px dotted #000000';
-    if (TD6a) TD68.style.border = '0px dotted #000000';
-    if (TD6b) TD68.style.border = '0px dotted #000000';
+    if (TD60) TD68.style.outline = '0px dotted #000000';
+    if (TD61) TD68.style.outline = '0px dotted #000000';
+    if (TD62) TD68.style.outline = '0px dotted #000000';
+    if (TD63) TD68.style.outline = '0px dotted #000000';
+    if (TD64) TD68.style.outline = '0px dotted #000000';
+    if (TD65) TD68.style.outline = '0px dotted #000000';
+    if (TD66) TD68.style.outline = '0px dotted #000000';
+    if (TD67) TD68.style.outline = '0px dotted #000000';
+    if (TD68) TD68.style.outline = '0px dotted #000000';
+    if (TD69) TD68.style.outline = '0px dotted #000000';
+    if (TD6a) TD68.style.outline = '0px dotted #000000';
+    if (TD6b) TD68.style.outline = '0px dotted #000000';
     this.dayDizio = {};
     this.dayDizioPartial = {};
     var leftButton = this.shadowRoot.getElementById(this.id+"leftButton");
@@ -468,31 +468,31 @@ class TemperatureHeatmapCard extends LitElement {
         if ((this.DayNOW == this.Day6) && (this.MonthNOW == this.Month6)) { tempNow = 1; }
       }
       if (DayNOW1 == this.Day6 && tempNow == 1) {
-        if (_id == "td60" && nowHour == 0 && TD60) TD60.style.border = '4px dotted #000000';
-        if (_id == "td61" && nowHour == 1 && TD61) TD61.style.border = '4px dotted #000000';
-        if (_id == "td62" && nowHour == 2 && TD62) TD62.style.border = '4px dotted #000000';
-        if (_id == "td63" && nowHour == 3 && TD63) TD63.style.border = '4px dotted #000000';
-        if (_id == "td64" && nowHour == 4 && TD64) TD64.style.border = '4px dotted #000000';
-        if (_id == "td65" && nowHour == 5 && TD65) TD65.style.border = '4px dotted #000000';
-        if (_id == "td66" && nowHour == 6 && TD66) TD66.style.border = '4px dotted #000000';
-        if (_id == "td67" && nowHour == 7 && TD67) TD67.style.border = '4px dotted #000000';
-        if (_id == "td68" && nowHour == 8 && TD68) TD68.style.border = '4px dotted #000000';
-        if (_id == "td69" && nowHour == 9 && TD69) TD69.style.border = '4px dotted #000000';
-        if (_id == "td6a" && nowHour == 10 && TD6a) TD6a.style.border = '4px dotted #000000';
-        if (_id == "td6b" && nowHour == 11 && TD6b) TD6b.style.border = '4px dotted #000000';
+        if (_id == "td60" && nowHour == 0 && TD60) TD60.style.outline = '4px dotted #000000';
+        if (_id == "td61" && nowHour == 1 && TD61) TD61.style.outline = '4px dotted #000000';
+        if (_id == "td62" && nowHour == 2 && TD62) TD62.style.outline = '4px dotted #000000';
+        if (_id == "td63" && nowHour == 3 && TD63) TD63.style.outline = '4px dotted #000000';
+        if (_id == "td64" && nowHour == 4 && TD64) TD64.style.outline = '4px dotted #000000';
+        if (_id == "td65" && nowHour == 5 && TD65) TD65.style.outline = '4px dotted #000000';
+        if (_id == "td66" && nowHour == 6 && TD66) TD66.style.outline = '4px dotted #000000';
+        if (_id == "td67" && nowHour == 7 && TD67) TD67.style.outline = '4px dotted #000000';
+        if (_id == "td68" && nowHour == 8 && TD68) TD68.style.outline = '4px dotted #000000';
+        if (_id == "td69" && nowHour == 9 && TD69) TD69.style.outline = '4px dotted #000000';
+        if (_id == "td6a" && nowHour == 10 && TD6a) TD6a.style.outline = '4px dotted #000000';
+        if (_id == "td6b" && nowHour == 11 && TD6b) TD6b.style.outline = '4px dotted #000000';
       } else {
-        if (TD60) TD60.style.border = '0px dotted #000000';
-        if (TD61) TD61.style.border = '0px dotted #000000';
-        if (TD62) TD62.style.border = '0px dotted #000000';
-        if (TD63) TD63.style.border = '0px dotted #000000';
-        if (TD64) TD64.style.border = '0px dotted #000000';
-        if (TD65) TD65.style.border = '0px dotted #000000';
-        if (TD66) TD66.style.border = '0px dotted #000000';
-        if (TD67) TD67.style.border = '0px dotted #000000';
-        if (TD68) TD68.style.border = '0px dotted #000000';
-        if (TD69) TD69.style.border = '0px dotted #000000';
-        if (TD6a) TD6a.style.border = '0px dotted #000000';
-        if (TD6b) TD6b.style.border = '0px dotted #000000';
+        if (TD60) TD60.style.outline = '0px dotted #000000';
+        if (TD61) TD61.style.outline = '0px dotted #000000';
+        if (TD62) TD62.style.outline = '0px dotted #000000';
+        if (TD63) TD63.style.outline = '0px dotted #000000';
+        if (TD64) TD64.style.outline = '0px dotted #000000';
+        if (TD65) TD65.style.outline = '0px dotted #000000';
+        if (TD66) TD66.style.outline = '0px dotted #000000';
+        if (TD67) TD67.style.outline = '0px dotted #000000';
+        if (TD68) TD68.style.outline = '0px dotted #000000';
+        if (TD69) TD69.style.outline = '0px dotted #000000';
+        if (TD6a) TD6a.style.outline = '0px dotted #000000';
+        if (TD6b) TD6b.style.outline = '0px dotted #000000';
       }
   }
 
