@@ -134,10 +134,10 @@ class TemperatureHeatmapCard extends LitElement {
       if (this.config.decimal_point !== undefined) decimal_point = this.config.decimal_point;
       if (decimal_point && text != -999 && !isNaN(text)) {
         var text_dec = (Math.round(text * 10) / 10).toFixed(1);
+        var sign = (text >= 0) ? "" : "-";
         var text_int = parseInt(text_dec);
         var text_flo = parseInt(((Math.round(text * 10) / 10) - text_int) * 10);
-        if (text_flo < 0) text_flo = text_flo * -1;
-        var text_html = text_int + ".<small>" + text_flo + "</small>";
+        var text_html = sign + Math.abs(text_int) + ".<small>" + Math.abs(text_flo) + "</small>";
         theDiv.innerHTML = text_html;
       }
       theTD.style.backgroundColor = "#"+this.tempToRGB(text);
