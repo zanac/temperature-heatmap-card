@@ -1,6 +1,6 @@
 # Temperature Heatmap card for Home Assistant
 Temperature Heatmap for Home Assistant v1.1.0
-![image](https://github.com/zanac/temperature-heatmap-card/assets/21194919/b0ea847c-fb91-4f28-84d0-d468e89a7af5)
+![Screenshot](https://github.com/zanac/temperature-heatmap-card/assets/21194919/b0ea847c-fb91-4f28-84d0-d468e89a7af5)
 
 
 Custom card enabling [Temperature Heat maps](https://en.wikipedia.org/wiki/Heat_map) in Home Assistant. Makes it simple to visualize the temperature data in your Home Assistant, as a heatmap, in a very cool way.
