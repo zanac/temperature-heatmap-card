@@ -1837,7 +1837,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
                 .hass=${this.myhass}
                 .value=${this._config.entity}
                 .configValue=${"entity"}
-                .includeDomains=${"sensor"}
+                .includeDomains=${["sensor"]}
             ></ha-entity-picker>
             ${this.render_entity_warning()}
             <h3>Card elements</h3>
@@ -1871,7 +1871,7 @@ export class TemperatureHeatmapCardEditor extends LitElement {
                 .hass=${this.myhass}
                 .value=${this._config.forecast_entity}
                 .configValue=${"forecast_entity"}
-                .includeDomains=${"weather"}
+                .includeDomains=${["weather"]}
             ></ha-entity-picker>
             <h3>Forecast Temp Adj</h3>
             <ha-textfield
