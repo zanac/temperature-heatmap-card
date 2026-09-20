@@ -141,7 +141,7 @@ Figuring out why the sensor data is not as consistent as before is another probl
 
 
 # Temperature Heatmap card for Home Assistant
-Temperature Heatmap for Home Assistant v1.1.0
+Temperature Heatmap for Home Assistant v1.1.2
 ![Screenshot](https://github.com/zanac/temperature-heatmap-card/assets/21194919/b0ea847c-fb91-4f28-84d0-d468e89a7af5)
 
 
