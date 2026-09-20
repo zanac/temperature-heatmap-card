@@ -889,6 +889,8 @@ class TemperatureHeatmapCard extends LitElement {
         if (this.grid[i].date == this.Day4) j = 4;
         if (this.grid[i].date == this.Day5) j = 5;
         if (this.grid[i].date == this.Day6) j = 6;
+        // Average each pair of hourly values. A missing hour (null/undefined) is a gap, not a zero:
+        // use the other hour of the pair if it exists, or -999 ("no data") if both are missing.
         var vals = this.grid[i].vals;
         var pairAvg = function(h1, h2) {
             var v1 = vals[h1], v2 = vals[h2];
@@ -927,7 +929,7 @@ class TemperatureHeatmapCard extends LitElement {
       if (this.gridForecast) {
         var jj;
         for (jj=0; jj<12; jj++) 
-          if (this.gridForecast && this.gridForecast[6][jj] != -999 && isNaN(grid7[6][jj])) grid7[6][jj] = this.gridForecast[6][jj];
+          if (this.gridForecast && this.gridForecast[6][jj] != -999 && (isNaN(grid7[6][jj]) || grid7[6][jj] == -999)) grid7[6][jj] = this.gridForecast[6][jj];
         for (jj=0; jj<12; jj++) 
           if (this.gridForecast && this.gridForecast[7][jj] != -999 && grid7[7][jj] == -999) grid7[7][jj] = this.gridForecast[7][jj];
       }
@@ -1511,30 +1513,32 @@ class TemperatureHeatmapCard extends LitElement {
   }
 
   loaderResponse(recorderResponse) {
+        var customtable = JSON.stringify(recorderResponse);
+        //this.grid = customtable;
         var consumers = [this.config.entity];
         var grid = [];
         for (const consumer of consumers) {
             const consumerData = recorderResponse[consumer];
-            var gridTemp = null;
+            var gridTemp = [];
             var prevDate = null;
+            var hour;
             for (const entry of consumerData) {
                 const start = new Date(entry.start);
-                const hour = start.getHours();
+                hour = start.getHours();
                 const dateRep = start.toLocaleDateString("en-EN", {day: '2-digit'});
 
-                if (dateRep !== prevDate) {
+                if (dateRep !== prevDate && prevDate !== null) {
                     gridTemp = Array(24).fill(null);
                     grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
                 }
-                if (entry.mean !== undefined && entry.mean !== null) {
-                    gridTemp[hour] = entry.mean;
-                }
+                if (entry.mean !== undefined && entry.mean !== null) gridTemp[hour] = entry.mean;
                 prevDate = dateRep;
             }
+            gridTemp.splice(hour + 1);
             this.grid = grid;
         }
         this.refreshRender();
-}
+  }
 
   loaderResponseMin(recorderResponse) {
         var customtable = JSON.stringify(recorderResponse);
