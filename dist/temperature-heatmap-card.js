@@ -134,10 +134,10 @@ class TemperatureHeatmapCard extends LitElement {
       if (this.config.decimal_point !== undefined) decimal_point = this.config.decimal_point;
       if (decimal_point && text != -999 && !isNaN(text)) {
         var text_dec = (Math.round(text * 10) / 10).toFixed(1);
+        var sign = (text >= 0) ? "" : "-";
         var text_int = parseInt(text_dec);
         var text_flo = parseInt(((Math.round(text * 10) / 10) - text_int) * 10);
-        if (text_flo < 0) text_flo = text_flo * -1;
-        var text_html = text_int + ".<small>" + text_flo + "</small>";
+        var text_html = sign + Math.abs(text_int) + ".<small>" + Math.abs(text_flo) + "</small>";
         theDiv.innerHTML = text_html;
       }
       theTD.style.backgroundColor = "#"+this.tempToRGB(text);
@@ -889,43 +889,29 @@ class TemperatureHeatmapCard extends LitElement {
         if (this.grid[i].date == this.Day4) j = 4;
         if (this.grid[i].date == this.Day5) j = 5;
         if (this.grid[i].date == this.Day6) j = 6;
-        var arrTemp = String(this.grid[i].vals).split(",");
-        if (arrTemp[0] == "") arrTemp[0] = 0;
-        if (arrTemp[1] == "") arrTemp[1] = 0;
-        if (arrTemp[2] == "") arrTemp[2] = 0;
-        if (arrTemp[3] == "") arrTemp[3] = 0;
-        if (arrTemp[4] == "") arrTemp[4] = 0;
-        if (arrTemp[5] == "") arrTemp[5] = 0;
-        if (arrTemp[6] == "") arrTemp[6] = 0;
-        if (arrTemp[7] == "") arrTemp[7] = 0;
-        if (arrTemp[8] == "") arrTemp[8] = 0;
-        if (arrTemp[9] == "") arrTemp[9] = 0;
-        if (arrTemp[10] == "") arrTemp[10] = 0;
-        if (arrTemp[11] == "") arrTemp[11] = 0;
-        if (arrTemp[12] == "") arrTemp[12] = 0;
-        if (arrTemp[13] == "") arrTemp[13] = 0;
-        if (arrTemp[14] == "") arrTemp[14] = 0;
-        if (arrTemp[15] == "") arrTemp[15] = 0;
-        if (arrTemp[16] == "") arrTemp[16] = 0;
-        if (arrTemp[17] == "") arrTemp[17] = 0;
-        if (arrTemp[18] == "") arrTemp[18] = 0;
-        if (arrTemp[19] == "") arrTemp[19] = 0;
-        if (arrTemp[20] == "") arrTemp[20] = 0;
-        if (arrTemp[21] == "") arrTemp[21] = 0;
-        if (arrTemp[22] == "") arrTemp[22] = 0;
-        if (arrTemp[23] == "") arrTemp[23] = 0;
-        var hour00 = ((parseFloat(arrTemp[0]) + parseFloat(arrTemp[1]))/2);
-        var hour02 = ((parseFloat(arrTemp[2]) + parseFloat(arrTemp[3]))/2);
-        var hour04 = ((parseFloat(arrTemp[4]) + parseFloat(arrTemp[5]))/2);
-        var hour06 = ((parseFloat(arrTemp[6]) + parseFloat(arrTemp[7]))/2);
-        var hour08 = ((parseFloat(arrTemp[8]) + parseFloat(arrTemp[9]))/2);
-        var hour10 = ((parseFloat(arrTemp[10]) + parseFloat(arrTemp[11]))/2);
-        var hour12 = ((parseFloat(arrTemp[12]) + parseFloat(arrTemp[13]))/2);
-        var hour14 = ((parseFloat(arrTemp[14]) + parseFloat(arrTemp[15]))/2);
-        var hour16 = ((parseFloat(arrTemp[16]) + parseFloat(arrTemp[17]))/2);
-        var hour18 = ((parseFloat(arrTemp[18]) + parseFloat(arrTemp[19]))/2);
-        var hour20 = ((parseFloat(arrTemp[20]) + parseFloat(arrTemp[21]))/2);
-        var hour22 = ((parseFloat(arrTemp[22]) + parseFloat(arrTemp[23]))/2);
+        // Average each pair of hourly values. A missing hour (null/undefined) is a gap, not a zero:
+        // use the other hour of the pair if it exists, or -999 ("no data") if both are missing.
+        var vals = this.grid[i].vals;
+        var pairAvg = function(h1, h2) {
+            var v1 = vals[h1], v2 = vals[h2];
+            var has1 = (v1 !== null && v1 !== undefined);
+            var has2 = (v2 !== null && v2 !== undefined);
+            if (!has1 && !has2) return -999;
+            if (has1 && has2) return (parseFloat(v1) + parseFloat(v2)) / 2;
+            return parseFloat(has1 ? v1 : v2);
+        };
+        var hour00 = pairAvg(0, 1);
+        var hour02 = pairAvg(2, 3);
+        var hour04 = pairAvg(4, 5);
+        var hour06 = pairAvg(6, 7);
+        var hour08 = pairAvg(8, 9);
+        var hour10 = pairAvg(10, 11);
+        var hour12 = pairAvg(12, 13);
+        var hour14 = pairAvg(14, 15);
+        var hour16 = pairAvg(16, 17);
+        var hour18 = pairAvg(18, 19);
+        var hour20 = pairAvg(20, 21);
+        var hour22 = pairAvg(22, 23);
         grid7[j][0] = hour00;
         grid7[j][1] = hour02;
         grid7[j][2] = hour04;
@@ -943,7 +929,7 @@ class TemperatureHeatmapCard extends LitElement {
       if (this.gridForecast) {
         var jj;
         for (jj=0; jj<12; jj++) 
-          if (this.gridForecast && this.gridForecast[6][jj] != -999 && isNaN(grid7[6][jj])) grid7[6][jj] = this.gridForecast[6][jj];
+          if (this.gridForecast && this.gridForecast[6][jj] != -999 && (isNaN(grid7[6][jj]) || grid7[6][jj] == -999)) grid7[6][jj] = this.gridForecast[6][jj];
         for (jj=0; jj<12; jj++) 
           if (this.gridForecast && this.gridForecast[7][jj] != -999 && grid7[7][jj] == -999) grid7[7][jj] = this.gridForecast[7][jj];
       }
@@ -1541,11 +1527,11 @@ class TemperatureHeatmapCard extends LitElement {
                 hour = start.getHours();
                 const dateRep = start.toLocaleDateString("en-EN", {day: '2-digit'});
 
-                if (dateRep !== prevDate && prevDate !== null) {
+                if (dateRep !== prevDate) {   // no "&& prevDate !== null": the first day must be pushed too
                     gridTemp = Array(24).fill(null);
                     grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
                 }
-                if (entry.mean) gridTemp[hour] = entry.mean;
+                if (entry.mean !== undefined && entry.mean !== null) gridTemp[hour] = entry.mean;
                 prevDate = dateRep;
             }
             gridTemp.splice(hour + 1);
