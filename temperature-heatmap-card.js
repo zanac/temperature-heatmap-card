@@ -1527,7 +1527,7 @@ class TemperatureHeatmapCard extends LitElement {
                 hour = start.getHours();
                 const dateRep = start.toLocaleDateString("en-EN", {day: '2-digit'});
 
-                if (dateRep !== prevDate && prevDate !== null) {
+                if (dateRep !== prevDate) {   // no "&& prevDate !== null": the first day must be pushed too
                     gridTemp = Array(24).fill(null);
                     grid.push({'date': dateRep, 'nativeDate': start, 'vals': gridTemp});
                 }
