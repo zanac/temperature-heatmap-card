@@ -859,9 +859,48 @@ class TemperatureHeatmapCard extends LitElement {
     else return temp;
   }
 
+  // True once Lit has committed the table to the shadow DOM. The values are painted
+  // imperatively into these cells, so painting before they exist is lost.
+  isGridInDom() {
+      return !!(this.shadowRoot && this.id && this.shadowRoot.getElementById(this.id+"td00"));
+  }
+
   refreshRender() {
       if (this.responseComplete < 3) return;
+      // Data can arrive while the card is not attached/rendered yet (e.g. inside a
+      // collapsed expander-card): don't paint now, updated() will do it once the
+      // table exists.
+      if (!this.isConnected || !this.isGridInDom()) {
+        this.requestUpdate();
+        return;
+      }
       this.render();
+  }
+
+  // Called by Lit after every commit of the template: render() paints the cells
+  // before Lit creates them, so repaint here, when the DOM is there.
+  updated(changedProps) {
+      if (super.updated) super.updated(changedProps);
+      if (this.responseComplete >= 3 && this.isGridInDom()) this.render();
+  }
+
+  connectedCallback() {
+      super.connectedCallback();
+      // Repaint when the card becomes visible (collapsible/hidden containers).
+      if (!this._visibilityObserver && typeof IntersectionObserver !== "undefined") {
+        this._visibilityObserver = new IntersectionObserver((entries) => {
+          if (entries.some((e) => e.isIntersecting)) this.refreshRender();
+        });
+      }
+      if (this._visibilityObserver) this._visibilityObserver.observe(this);
+      // Card re-attached after a long time: allow the next hass update to refetch.
+      if (Date.now() - this.last_render_ts >= 10 * 60 * 1000) this.last_render_ts = 0;
+      if (this.myhass) this.refreshRender();
+  }
+
+  disconnectedCallback() {
+      if (this._visibilityObserver) this._visibilityObserver.disconnect();
+      super.disconnectedCallback();
   }
 
   render() {
